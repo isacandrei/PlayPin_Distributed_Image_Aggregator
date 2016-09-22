@@ -68,7 +68,8 @@ Vagrant.configure("2") do |config|
     sudo apt-get update
     sudo apt -y install docker.io
     sudo service docker start
-    sudo docker run hello-world
+    sudo docker pull isac/play-pin:latest
+    sudo docker run -d --name play-pin-01 -p 8080:9000 isac/play-pin
   SHELL
 end
 
