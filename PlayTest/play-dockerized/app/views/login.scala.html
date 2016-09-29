@@ -1,0 +1,13 @@
+@(userForm: Form[User])(implicit messages: Messages)
+
+
+<h2>Tilu de test</h2>
+
+
+@main("Add a user") {
+    @helper.form(routes.LoginController.addUser) {
+        @helper.inputText(userForm("username"))
+        @helper.inputText(userForm("password"))
+        <button>Save</button>
+    }
+}
