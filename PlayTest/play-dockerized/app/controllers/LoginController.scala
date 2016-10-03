@@ -23,7 +23,7 @@ class LoginController @Inject()(val messagesApi: MessagesApi) extends Controller
 
 
 
-def index = Action {
+def login = Action {
 
         Ok(views.html.login(userForm))
   }
@@ -50,6 +50,8 @@ def index = Action {
 
   def addUser = Action(parse.urlFormEncoded) { implicit request =>
     val user = userForm.bindFromRequest.get
+
+//    OK(Json.toJson(user.toString))
     println(user)
     Redirect(routes.HomeController.index)
   }
