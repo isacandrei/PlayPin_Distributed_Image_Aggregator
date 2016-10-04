@@ -1,1 +1,45 @@
 <h1>Upload pin</h1>
+
+
+
+    @*
+    * Get an `Html` object by calling the built-in Play welcome
+    * template and passing a `String` message.
+    *@
+    <form action="/upload2" method="post" enctype="multipart/form-data">
+        <input type="file" id="file" name="file" />
+        <input type="submit" id="submit" name="" value="Upload" />
+    </form>
+
+    <script>
+            $('#submit').click(function (event) {
+                event.stopPropagation(); // Stop stuff happening
+                event.preventDefault(); // Totally stop stuff happening
+
+                // START A LOADING SPINNER HERE
+                var formData = new FormData();
+
+                formData.append("file", $("#file").get(0).files[0]);
+
+                $.ajax({
+                    url: 'upload',
+//                    data: {file : $("#file").get(0).files[0], name: $("#file").val()},
+//                    data: $("#file").get(0).files[0],
+                    data: formData,
+                    type: 'POST',
+                    contentType: false,
+                    processData: false,
+                    beforeSend: function (data) {
+//                        alert('Are you sure you want to upload document?');
+                    },
+                    success: function (data) {
+                        //call your jQuery action here
+                        alert('Upload completed: ' + data);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert(textStatus + ': ' + errorThrown);
+                    }
+                });
+                return false;
+            });
+    </script>

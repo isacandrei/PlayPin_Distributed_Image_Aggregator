@@ -8,7 +8,7 @@ object Tools {
     def uuid() = java.util.UUID.randomUUID.toString
 
     def isFileSupported(extension: String): Boolean = {
-        val supportedExtensions = Array ("jpg", "jpeg", "png", "gif", "img")
+        val supportedExtensions = Array ("jpg", "JPG", "jpeg", "png", "gif", "img")
         return supportedExtensions.contains(extension)
     }
 }

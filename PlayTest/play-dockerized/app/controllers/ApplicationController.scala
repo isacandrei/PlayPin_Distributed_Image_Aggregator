@@ -5,8 +5,8 @@ import javax.inject.Inject
 import play.api.mvc._
 
 /**
-	* Created by lex on 30/09/16.
-	*/
+* Created by lex on 30/09/16.
+*/
 
 class ApplicationController @Inject() extends Controller {
 
