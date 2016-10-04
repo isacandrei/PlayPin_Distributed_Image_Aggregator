@@ -26,9 +26,20 @@ class HomeController @Inject() (val reactiveMongoApi: ReactiveMongoApi)(implicit
    * will be called when the application receives a `GET` request with
    * a path of `/`.
    */
-  def index = Action {
-    Ok(views.html.index("."))
-  }
+
+    val imgs = Array("http://kurld.com/images/wallpapers/images/images-22.jpg",
+        "http://www.freedigitalphotos.net/images/img/homepage/87357.jpg",
+        "https://pixabay.com/static/uploads/photo/2015/08/14/08/29/images-888133_960_720.jpg")
+
+
+    def index = Action {
+        Ok(views.html.index("."))
+    }
+
+    def home = Action {
+        Ok(views.html.home(imgs))
+    }
+
 
   def usersFuture: Future[JSONCollection] = database.map(_.collection[JSONCollection]("user"))
 
@@ -89,3 +100,4 @@ class HomeController @Inject() (val reactiveMongoApi: ReactiveMongoApi)(implicit
   }
 
 }
+

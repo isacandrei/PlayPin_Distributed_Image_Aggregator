@@ -11,8 +11,8 @@ import play.api.mvc._
 class ApplicationController @Inject() extends Controller {
 
 
-	def home = Action {
-		Ok(views.html.home())
+	def createBoard = Action {
+		Ok(views.html.createBoard())
 	}
 
 	def showBoards = Action {
@@ -22,5 +22,7 @@ class ApplicationController @Inject() extends Controller {
 	def uploadPin = Action {
 		Ok(views.html.uploadPin())
 	}
+
+
 
 }
