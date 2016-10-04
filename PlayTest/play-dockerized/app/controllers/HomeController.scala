@@ -29,7 +29,36 @@ class HomeController @Inject() (val reactiveMongoApi: ReactiveMongoApi)(implicit
 
     val imgs = Array("http://kurld.com/images/wallpapers/images/images-22.jpg",
         "http://www.freedigitalphotos.net/images/img/homepage/87357.jpg",
-        "https://pixabay.com/static/uploads/photo/2015/08/14/08/29/images-888133_960_720.jpg")
+        "http://121clicks.com/wp-content/uploads/2012/04/portrait_eyes_23.jpg",
+        "http://cssdeck.com/uploads/media/items/6/6f3nXse.png",
+        "http://cssdeck.com/uploads/media/items/2/2v3VhAp.png",
+        "https://farm1.staticflickr.com/542/19074222720_ca5640fc18_b.jpg",
+        "http://www.freedigitalphotos.net/images/img/homepage/87357.jpg",
+        "http://cssdeck.com/uploads/media/items/2/2v3VhAp.png",
+        "http://cssdeck.com/uploads/media/items/1/1swi3Qy.png",
+        "http://121clicks.com/wp-content/uploads/2012/04/portrait_eyes_23.jpg",
+        "http://vanimg.s3.amazonaws.com/portrait-20.jpg",
+        "http://www.freedigitalphotos.net/images/img/homepage/87357.jpg",
+        "http://121clicks.com/wp-content/uploads/2012/04/portrait_eyes_23.jpg",
+        "http://cssdeck.com/uploads/media/items/6/6f3nXse.png",
+        "http://cssdeck.com/uploads/media/items/2/2v3VhAp.png",
+        "https://farm1.staticflickr.com/542/19074222720_ca5640fc18_b.jpg",
+        "http://www.freedigitalphotos.net/images/img/homepage/87357.jpg",
+        "http://cssdeck.com/uploads/media/items/2/2v3VhAp.png",
+        "http://cssdeck.com/uploads/media/items/1/1swi3Qy.png",
+        "http://121clicks.com/wp-content/uploads/2012/04/portrait_eyes_23.jpg",
+        "http://vanimg.s3.amazonaws.com/portrait-20.jpg",
+        "http://www.freedigitalphotos.net/images/img/homepage/87357.jpg",
+        "http://121clicks.com/wp-content/uploads/2012/04/portrait_eyes_23.jpg",
+        "http://cssdeck.com/uploads/media/items/6/6f3nXse.png",
+        "http://cssdeck.com/uploads/media/items/2/2v3VhAp.png",
+        "https://farm1.staticflickr.com/542/19074222720_ca5640fc18_b.jpg",
+        "http://www.freedigitalphotos.net/images/img/homepage/87357.jpg",
+        "http://cssdeck.com/uploads/media/items/2/2v3VhAp.png",
+        "http://cssdeck.com/uploads/media/items/1/1swi3Qy.png",
+        "http://121clicks.com/wp-content/uploads/2012/04/portrait_eyes_23.jpg",
+        "http://vanimg.s3.amazonaws.com/portrait-20.jpg",
+        "http://121clicks.com/wp-content/uploads/2012/04/portrait_eyes_23.jpg")
 
 
     def index = Action {
