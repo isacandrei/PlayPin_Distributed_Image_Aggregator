@@ -1,0 +1,33 @@
+package controllers
+
+import akka.actor.{Actor, ActorRef, Props}
+import play.api.Logger
+import play.api.libs.json.JsValue
+import play.mvc.BodyParser.Json
+
+/**
+  * Singleton object to facilitate the creation of new Actors
+  */
+object CustomWebSocketActor {
+    def props(out: ActorRef) = Props(new CustomWebSocketActor(out))
+}
+
+/**
+  * Custom actor that echo's messages that it receives.
+  *
+  * @param out Reference to the Actor to which a reply can be sent
+  */
+class CustomWebSocketActor(out: ActorRef) extends Actor {
+    Logger.info("Created WebSocket Actor")
+
+    def receive = {
+        case msg: JsValue => // If the message received is a Json...
+            Logger.info(s"Received $msg, echoing")
+            out ! msg // Send reply to output Actor
+        case x => Logger.warn(s"Unknown message $x") // The message was something other than a Json
+    }
+
+    override def postStop() = {
+        Logger.info("WebSocket has closed")
+    }
+}

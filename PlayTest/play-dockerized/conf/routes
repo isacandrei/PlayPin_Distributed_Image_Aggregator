@@ -26,6 +26,10 @@ GET     /users/add                  controllers.HomeController.create(username: 
 
 GET     /users                      controllers.HomeController.findByUsername(username: String)
 
-POST    /upload                     controllers.ImageController.upload()
+POST     /upload                    controllers.ImageController.upload()
 
 GET     /upload                     controllers.ImageController.image_form()
+
+GET     /web-sockets                controllers.WebSocketsController.web_sockets
+
+GET     /ws/get-new-images          controllers.WebSocketsController.complexJson
