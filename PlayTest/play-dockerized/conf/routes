@@ -21,7 +21,7 @@ GET     /showBoards                 controllers.ApplicationController.showBoards
 GET     /uploadPin                  controllers.ApplicationController.uploadPin
 =======
 
-GET     /users/add                  controllers.HomeController.create(username: String)
+GET     /users/add                  controllers.HomeController.create(username: String, password: String)
 
 GET     /users                      controllers.HomeController.findByUsername(username: String)
 
