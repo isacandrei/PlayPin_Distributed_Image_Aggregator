@@ -45,4 +45,6 @@ dist
 /RUNNING_PID
 /.settings
 
-    
+#Research Projects
+/play-s3
+/wacc-play-example    
