@@ -1,5 +1,13 @@
+@import controllers.HomeController
+@(imgs: Array[String])
 <h1>Home</h1>
 
-@card()
-@card()
-@card()
+<div class="card-columns">
+    @for(img <- imgs){
+        @card(img)
+    }
+</div>
+@*//@imgs*@
+@*//@card(i)*@
+@*//@card()*@
+@*//@card()*@
