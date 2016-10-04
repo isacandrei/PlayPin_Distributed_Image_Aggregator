@@ -14,3 +14,5 @@ libraryDependencies ++= Seq(
   "org.scalatestplus.play" %% "scalatestplus-play" % "1.5.1" % Test
 )
 
+libraryDependencies += "net.kaliber" %% "play-s3" % "8.0.0"
+libraryDependencies += "com.amazonaws" % "aws-java-sdk-osgi" % "1.11.39"
