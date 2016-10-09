@@ -1,8 +1,9 @@
 @import controllers.HomeController
+
 @(imgs: Array[String])
 <h1>Home</h1>
 <div id="wrapper">
-    <div class="card-columns">
+    <div class="grid" data-masonry='{ "itemSelector": ".grid-item", "columnWidth": 200 }'>
         @for(img <- imgs){
             @card(img)
         }
