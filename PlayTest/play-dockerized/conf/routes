@@ -18,14 +18,18 @@ GET     /createBoard                controllers.ApplicationController.createBoar
 GET     /showBoards                 controllers.ApplicationController.showBoards
 GET     /uploadPin                  controllers.ApplicationController.uploadPin
 
+
 GET     /login                      controllers.LoginController.login
 POST    /addUser                    controllers.LoginController.addUser
-
 
 GET     /users/add                  controllers.HomeController.create(username: String, password: String)
 
 GET     /users                      controllers.HomeController.findByUsername(username: String)
 
-POST    /upload                     controllers.ImageController.upload()
+POST     /upload                    controllers.ImageController.upload()
 
 GET     /upload                     controllers.ImageController.image_form()
+
+GET     /web-sockets                controllers.WebSocketsController.web_sockets
+
+GET     /ws/get-new-images          controllers.WebSocketsController.complexJson
