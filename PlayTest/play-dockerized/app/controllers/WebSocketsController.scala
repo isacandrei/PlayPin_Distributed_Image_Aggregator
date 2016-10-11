@@ -2,14 +2,10 @@ package controllers
 
 import javax.inject._
 
+import play.api.mvc._
 import akka.actor.ActorSystem
 import akka.stream.Materializer
 import play.api.libs.streams.ActorFlow
-import play.api.mvc._
-
-
-// Question : How to avoid using current and use Dependency Injection instead?
-import scala.concurrent.ExecutionContext.Implicits.global
 
 /**
   * Created by Mac on 01/10/2016.

@@ -1,8 +1,15 @@
-@(boards : List[String])
-<h1>Upload pin</h1>
+@(boards : List[String])(endpoint: String)
 
-    <div class="col-lg-3">
-        <form action="#" method="post" enctype="multipart/form-data">
+<section id="portfolio" class="bg-light-gray">
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <h2 class="section-heading">Upload pin</h2>
+            <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+        </div>
+    </div>
+    <div class="row">
+        <form id="upload-image-form" class="col-md-4" action="/upload2" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="board">Pin description</label>
                 <select id="board", name="board">
@@ -29,10 +36,35 @@
             <div class="form-group">
                 <input type="submit" class="form-control" id="submit" name="" value="Upload" />
             </div>
+
+            <div>
+                <textarea class="form-control" id="response" rows="30" disabled></textarea>
+            </div>
         </form>
     </div>
+</div>
+</section>
 
-    <script>
+
+
+<script src="@routes.Assets.versioned("javascripts/jquery.simple.websocket.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+
+            function webSocketImage(){
+
+                var webSocket = $.simpleWebSocket({url: " ws://" + window.location.host + "@endpoint"});
+
+                function sendMessage(msg) {
+                    webSocket.send(msg).done(function () {
+                        console.log(" Message \"" + msg + "\" sent successfully");
+                    }).fail(function (e) {
+                        console.log(" Could not send message, " + e);
+                    });
+                }
+
+                sendMessage($("#pin-title").val() + $("#pin-description").val() + $("#file").val());
+            }
+
             $('#file').on("change", function (event) {
 
                 // START A LOADING SPINNER HERE
@@ -83,6 +115,7 @@
                     },
                     success: function (data) {
                         //call your jQuery action here
+                        webSocketImage();
                         alert("success");
                     },
                     error: function (jqXHR, textStatus, errorThrown) {

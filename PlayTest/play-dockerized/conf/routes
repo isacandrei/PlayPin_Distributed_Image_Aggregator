@@ -26,3 +26,5 @@ GET     /upload                     controllers.PinController.uploadPin()
 POST    /upload-pin                 controllers.PinController.addPin()
 
 
+
+GET     /ws/getNewImages            controllers.WebSocketsController.echo
