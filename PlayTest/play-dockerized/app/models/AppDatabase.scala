@@ -8,7 +8,7 @@ import scala.concurrent.duration._
 
 object Defaults {
     val hosts = Seq("localhost")
-    val connector = ContactPoint.local.keySpace("playpin")
+    val connector = ContactPoint.local.keySpace("playpin", autoinit = true)
 }
 
 class AppDatabase(val keyspace: KeySpaceDef) extends Database(keyspace) {

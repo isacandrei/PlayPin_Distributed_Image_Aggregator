@@ -25,6 +25,7 @@ class BoardController @Inject() extends Controller {
     }
 
     def showBoards = Action.async {
+        AppDatabase.boards.createTable()
         AppDatabase.boards.getAll().map{
             boards => Ok(views.html.showBoards(boards))
         }

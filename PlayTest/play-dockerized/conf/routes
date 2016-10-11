@@ -17,14 +17,13 @@ GET     /home                       controllers.HomeController.home
 
 GET     /createBoard                controllers.BoardController.createBoard
 GET     /showBoards                 controllers.BoardController.showBoards
-POST    /add-board                  controllers.BoardController.addBoard()
+POST    /add-board                  controllers.BoardController.addBoard
 
 
 GET     /board/:board               controllers.PinController.getAllPins(board : String)
-POST    /upload                     controllers.PinController.upload()
-GET     /upload                     controllers.PinController.uploadPin()
-POST    /upload-pin                 controllers.PinController.addPin()
-
+POST    /upload                     controllers.PinController.upload
+GET     /upload                     controllers.PinController.uploadPin
+POST    /upload-pin                 controllers.PinController.addPin
 
 
 GET     /ws/getNewImages            controllers.WebSocketsController.echo
