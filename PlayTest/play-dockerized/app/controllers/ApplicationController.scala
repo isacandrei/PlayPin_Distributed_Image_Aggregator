@@ -20,7 +20,7 @@ class ApplicationController @Inject() extends Controller {
 	}
 
 	def uploadPin = Action {
-		Ok(views.html.uploadPin())
+		Ok(views.html.uploadPin("/ws/getNewImages"))
 	}
 
 

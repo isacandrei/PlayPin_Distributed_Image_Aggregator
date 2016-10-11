@@ -145,3 +145,8 @@ body {
     cursor: inherit;
     display: block;
 }
+
+
+#mainNav{
+    background: rgba(81,81,81,0.5) !important;
+}

@@ -23,7 +23,7 @@ $(document).ready(function(){
             dataType : 'text',
 
             success: function( response ) {
-                console.log('the page was loaded', response);
+                // console.log('the page was loaded', response);
                 $('.content').html(response);
             },
 

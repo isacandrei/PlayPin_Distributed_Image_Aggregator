@@ -31,5 +31,7 @@ POST     /upload                    controllers.ImageController.upload()
 GET     /upload                     controllers.ImageController.image_form()
 
 GET     /web-sockets                controllers.WebSocketsController.web_sockets
+GET     /ws/getNewImages            controllers.WebSocketsController.stringTest
 
-GET     /ws/get-new-images          controllers.WebSocketsController.complexJson
+#GET     /ws/getNewImages          controllers.WebSocketsController.complexJson
+#GET     /ws/complexIndex          controllers.WebSocketsController.complexJsonIndex
