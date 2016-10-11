@@ -1,6 +1,6 @@
 @(boards: List[String])
-<h1> Show boards</h1>
-
-@for(board <- boards){
-    <a href="/board/@board">@board</a>
+@pageLayout("Show boards") {
+    @for(board <- boards) {
+        <a href="/board/@board">@board</a>
+    }
 }
