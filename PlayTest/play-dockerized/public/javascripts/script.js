@@ -4,38 +4,62 @@
 
 $(document).ready(function(){
 
-    $('a').on('click', function(e){
-        e.preventDefault();
-        var pageRef = $(this).attr('href');
-
-        callPage(pageRef)
-
-    });
-
-
-    function callPage(pageRefInput){
-        // Using the core $.ajax() method
-        $.ajax({
-            url: pageRefInput,
-
-            type: "GET",
-
-            dataType : 'text',
-
-            success: function( response ) {
-                // console.log('the page was loaded', response);
-                $('.content').html(response);
-            },
-
-            error: function( error ) {
-                console.log('the page was NOT loaded', error);
-            },
-
-            complete: function( xhr, status ) {
-                console.log("The request is complete!");
-            }
-        });
-    }
+    applyAjax("body");
 
 });
 
+function webSocketImage(){
+
+    var webSocket = $.simpleWebSocket({url: " ws://" + window.location.host + "/ws/getNewImages"});
+    console.log("test");
+    // reconnected listening
+    webSocket.listen(function (message) {
+        console.log(" Received ");
+//                    var prettyJson = JSON.stringify(JSON.parse(message), null, 2);
+//                    $("#response").val(prettyJson + "\r\n" + $("#response").val())
+        console.log(message);
+        $("#response").html(message);
+
+    });
+}
+
+function applyAjax(container){
+    $(container + ' a').on('click', function(e){
+        e.preventDefault();
+        var pageRef = $(this).attr('href');
+
+        if (pageRef.split("/")[1] == "board"){
+            callPage(pageRef, true)
+        } else{
+            callPage(pageRef, false)
+        }
+    });
+}
+
+function callPage(pageRefInput, ws){
+    // Using the core $.ajax() method
+    $.ajax({
+        url: pageRefInput,
+
+        type: "GET",
+
+        dataType : 'text',
+
+        success: function( response ) {
+            // console.log('the page was loaded', response);
+            $('.content').html(response);
+            applyAjax(".content");
+            if (ws){
+                webSocketImage();
+            }
+        },
+
+        error: function( error ) {
+            console.log('the page was NOT loaded', error);
+        },
+
+        complete: function( xhr, status ) {
+            console.log("The request is complete!");
+        }
+    });
+}
