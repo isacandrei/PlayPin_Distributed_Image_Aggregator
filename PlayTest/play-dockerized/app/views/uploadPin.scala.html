@@ -1,7 +1,16 @@
+@(boards : List[String])
 <h1>Upload pin</h1>
 
     <div class="col-lg-3">
-        <form action="/upload2" method="post" enctype="multipart/form-data">
+        <form action="#" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="board">Pin description</label>
+                <select id="board", name="board">
+                    @for(board <- boards){
+                        <option value="@board">@board</option>
+                    }
+                </select>
+            </div>
             <div class="form-group">
                 <label for="pin-title">Pin title</label>
                 <input type="text" id="pin-title" class="form-control" name="pinTitle" />
@@ -16,7 +25,7 @@
                     Browse <input type="file"  id="file" name="file" style="display: none;">
                 </label>
             </div>
-
+            <input type="hidden" id="url">
             <div class="form-group">
                 <input type="submit" class="form-control" id="submit" name="" value="Upload" />
             </div>
@@ -24,9 +33,7 @@
     </div>
 
     <script>
-            $('#submit').click(function (event) {
-                event.stopPropagation(); // Stop stuff happening
-                event.preventDefault(); // Totally stop stuff happening
+            $('#file').on("change", function (event) {
 
                 // START A LOADING SPINNER HERE
                 var formData = new FormData();
@@ -35,8 +42,6 @@
 
                 $.ajax({
                     url: 'upload',
-//                    data: {file : $("#file").get(0).files[0], name: $("#file").val()},
-//                    data: $("#file").get(0).files[0],
                     data: formData,
                     type: 'POST',
                     contentType: false,
@@ -46,7 +51,39 @@
                     },
                     success: function (data) {
                         //call your jQuery action here
-                        alert('Upload completed: ' + data);
+                        $("#url").val(data);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert(textStatus + ': ' + errorThrown);
+                    }
+                });
+                return false;
+            });
+
+            $('#submit').on("click", function (event) {
+                event.stopPropagation(); // Stop stuff happening
+                event.preventDefault(); // Totally stop stuff happening
+
+                // START A LOADING SPINNER HERE
+                var pin = {
+                    title: $("#pin-title").val(),
+                    description: $("#pin-description").val(),
+                    board: $("#board").val(),
+                    url: $("#url").val()
+                }
+
+                $.ajax({
+                    url: 'upload-pin',
+                    data: JSON.stringify(pin),
+                    type: 'POST',
+                    contentType: "application/json",
+                    processData: false,
+                    beforeSend: function (data) {
+//                        alert('Are you sure you want to upload document?');
+                    },
+                    success: function (data) {
+                        //call your jQuery action here
+                        alert("success");
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         alert(textStatus + ': ' + errorThrown);
