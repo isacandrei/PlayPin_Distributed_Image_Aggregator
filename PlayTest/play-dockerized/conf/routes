@@ -14,22 +14,16 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 
 
 GET     /home                       controllers.HomeController.home
-GET     /createBoard                controllers.ApplicationController.createBoard
-GET     /showBoards                 controllers.ApplicationController.showBoards
-GET     /uploadPin                  controllers.ApplicationController.uploadPin
+
+GET     /createBoard                controllers.BoardController.createBoard
+GET     /showBoards                 controllers.BoardController.showBoards
+POST    /add-board                  controllers.BoardController.addBoard
 
 
-GET     /login                      controllers.LoginController.login
-POST    /addUser                    controllers.LoginController.addUser
+GET     /board/:board               controllers.PinController.getAllPins(board : String)
+POST    /upload                     controllers.PinController.upload
+GET     /upload                     controllers.PinController.uploadPin
+POST    /upload-pin                 controllers.PinController.addPin
 
-GET     /users/add                  controllers.HomeController.create(username: String, password: String)
 
-GET     /users                      controllers.HomeController.findByUsername(username: String)
-
-POST     /upload                    controllers.ImageController.upload()
-
-GET     /upload                     controllers.ImageController.image_form()
-
-GET     /web-sockets                controllers.WebSocketsController.web_sockets
-
-GET     /ws/get-new-images          controllers.WebSocketsController.complexJson
+GET     /ws/getNewImages            controllers.WebSocketsController.echo

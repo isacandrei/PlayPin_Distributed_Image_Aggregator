@@ -1,20 +1,64 @@
-<h1>Upload pin</h1>
+@(boards : List[String], endpoint: String)
+
+@pageLayout("Upload pin"){
+        <form id="upload-image-form" class="col-md-4" action="/upload2" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="board">Pin description</label>
+                <select id="board", name="board">
+                    @for(board <- boards){
+                        <option value="@board">@board</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="pin-title">Pin title</label>
+                <input type="text" id="pin-title" class="form-control" name="pinTitle" />
+            </div>
+            <div class="form-group">
+                <label for="pin-description">Pin description</label>
+                <textarea id="pin-description" class="form-control" name="pinDescription" placeholder="Your description here"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="file">File input</label>
+                <label class="btn btn-default btn-file">
+                    Browse <input type="file"  id="file" name="file" style="display: none;">
+                </label>
+            </div>
+            <input type="hidden" id="url">
+            <div class="form-group">
+                <input type="submit" class="form-control" id="submit" name="" value="Upload" />
+            </div>
+
+            <div>
+                <textarea class="form-control" id="response" rows="30" disabled></textarea>
+            </div>
+        </form>
 
 
+    <script type="text/javascript">
 
-    @*
-    * Get an `Html` object by calling the built-in Play welcome
-    * template and passing a `String` message.
-    *@
-    <form action="/upload2" method="post" enctype="multipart/form-data">
-        <input type="file" id="file" name="file" />
-        <input type="submit" id="submit" name="" value="Upload" />
-    </form>
+            function webSocketImageUpload(){
 
-    <script>
-            $('#submit').click(function (event) {
-                event.stopPropagation(); // Stop stuff happening
-                event.preventDefault(); // Totally stop stuff happening
+                var webSocket = $.simpleWebSocket({url: " ws://" + window.location.host + "@endpoint"});
+
+                function sendMessage(msg) {
+                    webSocket.send(msg).done(function () {
+                        console.log(" Message \"" + msg + "\" sent successfully");
+                    }).fail(function (e) {
+                        console.log(" Could not send message, " + e);
+                    });
+                }
+
+                var pin = {
+                    board: $("#board").val(),
+                    title: $("#pin-title").val(),
+                    description: $("#pin-description").val(),
+                    url: $("#url").val()
+                };
+                sendMessage(JSON.stringify(pin));
+            }
+
+            $('#file').on("change", function (event) {
 
                 // START A LOADING SPINNER HERE
                 var formData = new FormData();
@@ -23,8 +67,6 @@
 
                 $.ajax({
                     url: 'upload',
-//                    data: {file : $("#file").get(0).files[0], name: $("#file").val()},
-//                    data: $("#file").get(0).files[0],
                     data: formData,
                     type: 'POST',
                     contentType: false,
@@ -34,7 +76,40 @@
                     },
                     success: function (data) {
                         //call your jQuery action here
-                        alert('Upload completed: ' + data);
+                        $("#url").val(data);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert(textStatus + ': ' + errorThrown);
+                    }
+                });
+                return false;
+            });
+
+            $('#submit').on("click", function (event) {
+                event.stopPropagation(); // Stop stuff happening
+                event.preventDefault(); // Totally stop stuff happening
+
+                // START A LOADING SPINNER HERE
+                var pin = {
+                    title: $("#pin-title").val(),
+                    description: $("#pin-description").val(),
+                    board: $("#board").val(),
+                    url: $("#url").val()
+                }
+
+                $.ajax({
+                    url: 'upload-pin',
+                    data: JSON.stringify(pin),
+                    type: 'POST',
+                    contentType: "application/json",
+                    processData: false,
+                    beforeSend: function (data) {
+//                        alert('Are you sure you want to upload document?');
+                    },
+                    success: function (data) {
+                        //call your jQuery action here
+                        webSocketImageUpload();
+                        alert("success");
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         alert(textStatus + ': ' + errorThrown);
@@ -43,3 +118,4 @@
                 return false;
             });
     </script>
+}

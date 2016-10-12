@@ -66,21 +66,21 @@ body {
     content: " dsfasd.";
 }
 
-/*@media (min-width: 960px) {*/
-    /*.card-columns {*/
-        /*-webkit-column-count: 4;*/
-        /*-moz-column-count: 4;*/
-        /*column-count: 4;*/
-    /*}*/
-/*}*/
+@media (min-width: 960px) {
+    .card-columns {
+        -webkit-column-count: 4;
+        -moz-column-count: 4;
+        column-count: 4;
+    }
+}
 
-/*@media (min-width: 1100px) {*/
-    /*.card-columns {*/
-        /*-webkit-column-count: 5;*/
-        /*-moz-column-count: 5;*/
-        /*column-count: 5;*/
-    /*}*/
-/*}*/
+@media (min-width: 1100px) {
+    .card-columns {
+        -webkit-column-count: 5;
+        -moz-column-count: 5;
+        column-count: 5;
+    }
+}
 
 /*** Card Captions ****/
 
@@ -121,4 +121,32 @@ body {
     -webkit-transform: translateY(-100%);
     opacity: 1;
     transform: translateY(-100%);
+}
+
+
+.grid-item { width: 200px; }
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+.btn-file input[type=file] {
+    /*position: absolute;*/
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}
+
+
+#mainNav{
+    background: rgba(81,81,81,0.5) !important;
 }

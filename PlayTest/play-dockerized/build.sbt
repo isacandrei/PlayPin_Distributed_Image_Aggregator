@@ -4,15 +4,22 @@ version := "1.1"
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
-scalaVersion := "2.11.7"
+scalaVersion := "2.11.8"
 
-libraryDependencies ++= Seq(
-  jdbc,
-  cache,
-  ws,
-  "org.reactivemongo" %% "play2-reactivemongo" % "0.11.14",
-  "org.scalatestplus.play" %% "scalatestplus-play" % "1.5.1" % Test
+val PhantomVersion = "1.29.3"
+
+resolvers ++= Seq(
+    Resolver.typesafeRepo("releases"),
+    Resolver.sonatypeRepo("releases"),
+    Resolver.bintrayRepo("websudos", "oss-releases")
 )
 
-libraryDependencies += "net.kaliber" %% "play-s3" % "8.0.0"
-libraryDependencies += "com.amazonaws" % "aws-java-sdk-osgi" % "1.11.39"
+libraryDependencies ++= Seq(
+    jdbc,
+    cache,
+    ws,
+    "net.liftweb" %% "lift-json" % "2.6.2",
+    "com.websudos" %% "phantom-dsl" % PhantomVersion,
+    "com.websudos" %% "phantom-reactivestreams" % PhantomVersion,
+    "com.amazonaws" % "aws-java-sdk-osgi" % "1.11.39"
+)
