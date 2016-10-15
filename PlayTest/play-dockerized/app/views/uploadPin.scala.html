@@ -3,8 +3,8 @@
 @pageLayout("Upload pin"){
         <form id="upload-image-form" class="col-md-4" action="/upload2" method="post" enctype="multipart/form-data">
             <div class="form-group">
-                <label for="board">Pin description</label>
-                <select id="board", name="board">
+                <label for="board">Pin board</label>
+                <select id="board" name="board">
                     @for(board <- boards){
                         <option value="@board">@board</option>
                     }
@@ -39,7 +39,18 @@
 
             function webSocketImageUpload(){
 
-                var webSocket = $.simpleWebSocket({url: " ws://" + window.location.host + "@endpoint"});
+                @*var webSocket = $.simpleWebSocket({url: " ws://" + window.location.host + "@endpoint"});*@
+                @*console.log("endpoint:" + "@endpoint");*@
+
+                // for test
+//                webSocket.listen(function (message) {
+//                    console.log(" Received " + message);
+//
+//                    var prettyJson = JSON.stringify(JSON.parse(message), null, 2);
+//
+//                    // Update textarea
+//                    $("#response").val(prettyJson + "\r\n" + $("#response").val())
+//                });
 
                 function sendMessage(msg) {
                     webSocket.send(msg).done(function () {

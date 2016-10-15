@@ -2,15 +2,10 @@
     * Created by lex on 01/10/16.
     */
 
-$(document).ready(function(){
-
-    applyAjax("body");
-
-});
+var webSocket = $.simpleWebSocket({url: " ws://" + window.location.host + "/ws/getNewImages"});
 
 function webSocketImage(){
 
-    var webSocket = $.simpleWebSocket({url: " ws://" + window.location.host + "/ws/getNewImages"});
     console.log("test");
     // reconnected listening
     webSocket.listen(function (message) {
@@ -22,6 +17,15 @@ function webSocketImage(){
 
     });
 }
+
+$(document).ready(function(){
+
+    applyAjax("body");
+    webSocketImage();
+
+
+});
+
 
 function applyAjax(container){
     $(container + ' a').on('click', function(e){
@@ -50,7 +54,6 @@ function callPage(pageRefInput, ws){
             $('.content').html(response);
             applyAjax(".content");
             if (ws){
-                webSocketImage();
             }
         },
 
