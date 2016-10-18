@@ -2,27 +2,11 @@
     * Created by lex on 01/10/16.
     */
 
-var webSocket = $.simpleWebSocket({url: " ws://" + window.location.host + "/ws/getNewImages"});
-
-function webSocketImage(){
-
-    console.log("test");
-    // reconnected listening
-    webSocket.listen(function (message) {
-        console.log(" Received ");
-//                    var prettyJson = JSON.stringify(JSON.parse(message), null, 2);
-//                    $("#response").val(prettyJson + "\r\n" + $("#response").val())
-        console.log(message);
-        $("#response").html(message);
-
-    });
-}
+var webSocketReceive = $.simpleWebSocket({url: " ws://" + window.location.host + "/socket"});
 
 $(document).ready(function(){
 
     applyAjax("body");
-    webSocketImage();
-
 
 });
 
@@ -53,8 +37,6 @@ function callPage(pageRefInput, ws){
             // console.log('the page was loaded', response);
             $('.content').html(response);
             applyAjax(".content");
-            if (ws){
-            }
         },
 
         error: function( error ) {

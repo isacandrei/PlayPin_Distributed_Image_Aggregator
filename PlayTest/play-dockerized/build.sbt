@@ -21,5 +21,6 @@ libraryDependencies ++= Seq(
     "net.liftweb" %% "lift-json" % "2.6.2",
     "com.websudos" %% "phantom-dsl" % PhantomVersion,
     "com.websudos" %% "phantom-reactivestreams" % PhantomVersion,
-    "com.amazonaws" % "aws-java-sdk-osgi" % "1.11.39"
+    "com.amazonaws" % "aws-java-sdk-osgi" % "1.11.39",
+    "com.typesafe.akka" %% "akka-actor" % "2.4.11"
 )

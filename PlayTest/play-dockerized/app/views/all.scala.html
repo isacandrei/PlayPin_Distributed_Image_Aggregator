@@ -3,7 +3,7 @@
 * message to display.
 *@
 @(pins: List[Pin])
-
+@*//@(newPin: String)*@
 @*
 * Call the `main` template with two arguments. The first
 * argument is a `String` with the title of the page, the second
@@ -14,11 +14,41 @@
     <div id="wrapper">
         <div id="response"></div>
         <div class="card-columns">
-        @for(pin <- pins) {
-            @card1(pin)
-        }
+            @for(pin <- pins) {
+                @card1(pin)
+            }
+        </div>
+        <div>
+            <textarea class="form-control" id="display-pin" rows="30" disabled></textarea>
         </div>
     </div>
 }
 
 
+<script>
+
+
+        function webSocketImageDisplay(){
+
+
+
+            webSocketReceive.listen(function (message) {
+                console.log(" Received " + message);
+
+                var pin = JSON.parse(message);
+                var pinHtml = "<div class=\"grid-item\">" +
+                "    <h3>" + pin.title + "<\/h3>" +
+                "    <img class=\"\" src=\" " + pin.url + "\" alt=\"Card image\">" +
+                "    <span class=\"\">" +
+                "        <p class=\"\">"+ pin.description+ "<\/p>" +
+                "    <\/span>" +
+                "<\/div>";
+
+                $(".card-columns").first().prepend(pinHtml);
+            });
+        }
+
+        $(document).ready(function(){
+            webSocketImageDisplay()
+        });
+</script>
