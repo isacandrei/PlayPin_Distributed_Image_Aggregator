@@ -1,10 +1,10 @@
-@(boards : List[String], endpoint: String)
+@(boards : List[String])
 
 @pageLayout("Upload pin"){
         <form id="upload-image-form" class="col-md-4" action="/upload2" method="post" enctype="multipart/form-data">
             <div class="form-group">
-                <label for="board">Pin description</label>
-                <select id="board", name="board">
+                <label for="board">Pin board</label>
+                <select id="board" name="board">
                     @for(board <- boards){
                         <option value="@board">@board</option>
                     }
@@ -28,10 +28,6 @@
             <div class="form-group">
                 <input type="submit" class="form-control" id="submit" name="" value="Upload" />
             </div>
-
-            <div>
-                <textarea class="form-control" id="response" rows="30" disabled></textarea>
-            </div>
         </form>
 
 
@@ -39,23 +35,23 @@
 
             function webSocketImageUpload(){
 
-                var webSocket = $.simpleWebSocket({url: " ws://" + window.location.host + "@endpoint"});
+//                var webSocket = $.simpleWebSocket({url: " ws://" + window.location.host + "/socket"});
 
                 function sendMessage(msg) {
-                    webSocket.send(msg).done(function () {
+                    webSocketReceive.send(msg).done(function () {
                         console.log(" Message \"" + msg + "\" sent successfully");
                     }).fail(function (e) {
                         console.log(" Could not send message, " + e);
                     });
                 }
-
+//
                 var pin = {
                     board: $("#board").val(),
                     title: $("#pin-title").val(),
                     description: $("#pin-description").val(),
                     url: $("#url").val()
                 };
-                sendMessage(JSON.stringify(pin));
+                sendMessage(pin);
             }
 
             $('#file').on("change", function (event) {

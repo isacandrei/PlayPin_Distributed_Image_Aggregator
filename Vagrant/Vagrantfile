@@ -9,7 +9,6 @@ Vagrant.configure("2") do |config|
   # config.vm.network "private_network", ip: "192.168.10.14"
 
   config.vm.define "web1" do |web1|
-    web1.vm.network :forwarded_port, guest: 22, host: 1234
 
     web1.vm.box = "ubuntu/trusty64"    
     web1.vm.hostname = 'web1'
@@ -17,23 +16,24 @@ Vagrant.configure("2") do |config|
 
     web1.vm.provider :virtualbox do |v|
       # v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-      v.customize ["modifyvm", :id, "--memory", 512]
+      v.customize ["modifyvm", :id, "--memory", 1024]
       v.customize ["modifyvm", :id, "--name", "web1"]
     end
     
     config.vm.provision "shell", inline: <<-SHELL
-      sudo apt-get update
-      sudo apt -y install docker.io
-      sudo service docker start
-      sudo docker pull isac/play-pin:latest
-      sudo docker run -d --name play-pin1 -p 8080:9000 isac/play-pin
-      sudo docker pull mongo
-      sudo docker run -d --name mongo1 -p 30000:27017 mongo mongod --replSet pin-mongo-set
+      sudo su
+      apt-get update
+      apt -y install docker.io
+      service docker start
+      export DOCKER_IP='192.168.56.101'
+      docker run -d --net=host --name consul consul agent -bind=$DOCKER_IP -retry-join=192.168.56.104
+      docker run -d --name=registrator --net=host --volume=/var/run/docker.sock:/tmp/docker.sock gliderlabs/registrator:latest consul://127.0.0.1:8500
+      docker run -d --name play-pin -p 8080:9000 isac/play-pin
+      docker run --name cassandra -d -v /data:/var/lib/cassandra -e CASSANDRA_BROADCAST_ADDRESS=192.168.56.101 -p 7000:7000 -e CASSANDRA_SEEDS=192.168.56.103 cassandra:3.9
     SHELL
   end
 
   config.vm.define "web2" do |web2|
-    web2.vm.network :forwarded_port, guest: 22, host: 1234
 
     web2.vm.box = "ubuntu/trusty64"    
     web2.vm.hostname = 'web2'
@@ -41,22 +41,23 @@ Vagrant.configure("2") do |config|
 
     web2.vm.provider :virtualbox do |v|
       # v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-      v.customize ["modifyvm", :id, "--memory", 512]
+      v.customize ["modifyvm", :id, "--memory", 1024]
       v.customize ["modifyvm", :id, "--name", "web2"]
     end
     config.vm.provision "shell", inline: <<-SHELL
-      sudo apt-get update
-      sudo apt -y install docker.io
-      sudo service docker start
-      sudo docker pull isac/play-pin:latest
-      sudo docker run -d --name play-pin2 -p 8080:9000 isac/play-pin
-      sudo docker pull mongo
-      sudo docker run -d --name mongo2 -p 30000:27017 mongo mongod --replSet pin-mongo-set
+      sudo su
+      apt-get update
+      apt -y install docker.io
+      service docker start
+      export DOCKER_IP='192.168.56.102'
+      docker run -d --net=host --name consul consul agent -bind=$DOCKER_IP -retry-join=192.168.56.104
+      docker run -d --name=registrator --net=host --volume=/var/run/docker.sock:/tmp/docker.sock gliderlabs/registrator:latest consul://127.0.0.1:8500
+      docker run -d --name play-pin -p 8080:9000 isac/play-pin
+      docker run --name cassandra -d -v /data:/var/lib/cassandra -e CASSANDRA_BROADCAST_ADDRESS=192.168.56.102 -p 7000:7000 -e CASSANDRA_SEEDS=192.168.56.103 cassandra:3.9
     SHELL
   end
 
   config.vm.define "web3" do |web3|
-    web3.vm.network :forwarded_port, guest: 22, host: 1234
 
     web3.vm.box = "ubuntu/trusty64"    
     web3.vm.hostname = 'web3'
@@ -64,17 +65,19 @@ Vagrant.configure("2") do |config|
 
     web3.vm.provider :virtualbox do |v|
       # v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-      v.customize ["modifyvm", :id, "--memory", 512]
+      v.customize ["modifyvm", :id, "--memory", 1024]
       v.customize ["modifyvm", :id, "--name", "web3"]
     end
     config.vm.provision "shell", inline: <<-SHELL
-      sudo apt-get update
-      sudo apt -y install docker.io
-      sudo service docker start
-      sudo docker pull isac/play-pin:latest
-      sudo docker run -d --name play-pin3 -p 8080:9000 isac/play-pin
-      sudo docker pull mongo
-      sudo docker run -d --name mongo3 -p 30000:27017 mongo mongod --replSet pin-mongo-set
+      sudo su
+      apt-get update
+      apt -y install docker.io
+      service docker start
+      export DOCKER_IP='192.168.56.103'
+      docker run -d --net=host --name consul consul agent -bind=$DOCKER_IP -retry-join=192.168.56.104
+      docker run -d --name=registrator --net=host --volume=/var/run/docker.sock:/tmp/docker.sock gliderlabs/registrator:latest consul://127.0.0.1:8500
+      docker run -d --name play-pin -p 8080:9000 isac/play-pin
+      docker run --name cassandra -d -v /data:/var/lib/cassandra -e CASSANDRA_BROADCAST_ADDRESS=192.168.56.103 -p 7000:7000 cassandra:3.9
     SHELL
   end
 

@@ -1,0 +1,22 @@
+
+
+
+export DOCKER_IP='192.168.56.103'
+
+docker run -d --net=host --name consul consul agent -bind=$DOCKER_IP -retry-join=192.168.56.104
+
+docker run -d --name=registrator --net=host --volume=/var/run/docker.sock:/tmp/docker.sock gliderlabs/registrator:latest consul://127.0.0.1:8500
+
+docker exec consul consul members
+
+
+consul : 0.7.0
+
+
+/usr/sbin/nginx -c /etc/nginx/nginx.conf && consul-template -consul=192.168.56.104:8500 -template "/etc/consul-templates/app.conf:/etc/nginx/conf.d/app.conf:service nginx restart || true"
+
+consul-template -consul=192.168.56.104:8500 -template "/etc/consul-templates/app.conf.tmpl:/etc/nginx/conf.d/app.conf:service nginx restart || true" &
+
+docker run --name cassandra -d -v /data:/var/lib/cassandra -e CASSANDRA_BROADCAST_ADDRESS=192.168.56.103 -p 7000:7000 cassandra:3.9
+
+docker run --name cassandra -d -v /data:/var/lib/cassandra -e CASSANDRA_BROADCAST_ADDRESS=192.168.56.101 -p 7000:7000 -e CASSANDRA_SEEDS=192.168.56.103 cassandra:3.9

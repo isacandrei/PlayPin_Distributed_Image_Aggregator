@@ -48,4 +48,5 @@ dist
 #Research Projects
 /play-s3
 /wacc-play-example   
-/phantom-activator-template 
+/phantom-activator-template
+Vagrant_nginx/etc 

@@ -1,0 +1,116 @@
+curl -L https://github.com/docker/compose/releases/download/1.8.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+
+chmod +x /usr/local/bin/docker-compose
+
+export DOCKER_IP='192.168.56.104'
+
+docker run -d --net=host --name consul consul agent -server -bind=$DOCKER_IP -bootstrap -client=$DOCKER_IP -ui
+
+docker run -it -d --name registrator -v /var/run/docker.sock:/tmp/docker.sock -h $DOCKER_IP gliderlabs/registrator consul://$DOCKER_IP:8500
+
+or
+
+docker run -d --name=registrator --net=host --volume=/var/run/docker.sock:/tmp/docker.sock gliderlabs/registrator:latest consul://192.168.56.104:8500
+
+
+docker run -d --name consul -p 8400:8400 -p 8500:8500/tcp -p 8600:53/udp  consul agent -server -bind=$DOCKER_IP -bootstrap -client=$DOCKER_IP -ui
+
+docker run -d -v /somewhere/to/put/logs:/var/log/nginx:rw -p 80:80 --name nginx -e "SERVICE_NAME=nginx-play-pin" isac/nginx-consul-template
+
+docker run -d --net=host --name node3 consul agent -bind=192.168.56.103 client=192.168.56.103 -retry-join=192.168.56.104
+
+docker run --name=registrator --net=host --volume=/var/run/docker.sock:/tmp/docker.sock gliderlabs/registrator:latest consul://192.168.56.103:8500
+
+
+//good one or not!
+docker run -d --name consul -p 8400:8400 -p 8500:8500/tcp -p 8600:53/udp consul agent -server -advertise=192.168.56.104 -bind=127.0.0.1 -client=0.0.0.0 -bootstrap -ui -data-dir=/tmp/consul
+
+docker run -it -d --name registrator -v /var/run/docker.sock:/tmp/docker.sock -h $DOCKER_IP gliderlabs/registrator consul://$DOCKER_IP:8500
+
+docker run -d -v /somewhere/to/put/logs:/var/log/nginx:rw -p 80:80 --name nginx -e "SERVICE_NAME=nginx-play-pin" isac/nginx-consul-template
+
+docker run -d --name play-pin -p 8080:9000 isac/play-pin
+
+
+docker run -d --name=node1 consul agent-node=node1 -join=192.168.56.104 -bind=127.0.0.1 -client=0.0.0.0 -data-dir=/tmp/consul
+
+
+
+docker run -it -d -h node --name consul -p 8500:8500 -p 53:53/udp progrium/consul -server -bootstrap -advertise 192.168.56.104 
+
+docker run -it -d --name registrator -v /var/run/docker.sock:/tmp/docker.sock -h $DOCKER_IP gliderlabs/registrator consul://$DOCKER_IP:8500
+
+docker build --rm -t isac/nginx-consul-template .
+
+docker run -d -v /somewhere/to/put/logs:/var/log/nginx:rw -p 80:80 --name nginx -e "SERVICE_NAME=nginx-play-pin" isac/nginx-consul-template
+
+
+docker run -it -d -p 8400:8400 -p 8500:8500 -p 8600:53/udp --name node1 -h node1   progrium/consul -server  -join 192.168.56.104
+
+
+
+
+docker run -d --name=registrator --net=host --volume=/var/run/docker.sock:/tmp/docker.sock gliderlabs/registrator:latest consul://192.168.56.104:8500
+
+
+
+docker run -d --net=host --name consul consul agent -server -bind=192.168.56.104 -bootstrap -ui -client
+
+docker run -d --net=host -e 'CONSUL_ALLOW_PRIVILEGED_PORTS=' consul -dns-port=53
+
+docker run -d --net=host -e 'CONSUL_ALLOW_PRIVILEGED_PORTS=' consul agent -dns-port=53 -bind=<bridge ip>
+
+
+curl 192.168.56.104:8500/v1/catalog/services
+
+
+
+docker exec consul consul members
+
+
+docker run -i --dns=<bridge ip> -t ubuntu sh -c "apt-get update && apt-get install -y dnsutils && dig consul.service.consul"
+
+
+docker run -d -p 80:80 --name nginx-consul-template --link consul:consul -e "CONSUL_KV_PREFIX=nginx" -e "CONSUL_PORT_8500_TCP_ADDR=consul" shufo/nginx-consul-template
+
+docker run -d --name play-pin -p 8080:9000 isac/play-pin
+
+docker run -d --name hello-world -p 8080:9000 isac/play-pin
+
+docker run --name nginx -d -p 80:80 -v /etc/nginx/sites-available dockerfile/nginx
+
+
+docker run --name nginx-consul-template -d -e CONSUL_TEMPLATE_LOG=debug -v /var/run/docker.sock:/tmp/docker.sock -v //Users/Mac/Documents/An_IV/Sem_1/WCC/Project/Vagrant_nginx/nginx.ctml:/tmp/nginx.ctmpl --volumes-from nginx avthart/consul-template -consul=192.168.56.104/:8500 -wait=5s -template="/tmp/nginx.ctmpl:/etc/nginx/sites-available/default:/bin/docker kill -s HUP nginx"
+
+
+
+docker build -rm -t isac/shop-data .
+
+docker run -d --name pin-data isac/pin-data
+docker run  --name nginx-consul-template --rm --volumes-from=pin-data -ti seges/nginx-consul:1.9.9
+
+
+    config.vm.provision "shell", inline: <<-SHELL
+      sudo apt-get update
+      sudo apt -y install nginx
+      sudo rm /etc/nginx/nginx.conf
+      sudo cp /vagrant/nginx.conf /etc/nginx/nginx.conf
+      sudo service nginx restart
+    SHELL
+
+
+
+
+
+
+
+
+
+docker run -d -v /somewhere/to/put/logs:/var/log/nginx:rw --link consul:consul -p 80:80 --name nginx -e "SERVICE_NAME=splay-pin" isac/nginx-consul-template
+
+
+
+
+
+
+
