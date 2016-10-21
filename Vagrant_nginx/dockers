@@ -99,9 +99,9 @@ docker run  --name nginx-consul-template --rm --volumes-from=pin-data -ti seges/
     SHELL
 
 
+-e JAVA_OPTS='-Xmx{512m'
 
-
-
+docker run --name cassandra -d -v /data:/var/lib/cassandra -v /Users/Mac/Documents/An_IV/Sem_1/WCC/Project/Vagrant/cassandra-env.sh:/var/lib/cassandra/etc/cassandra/cassandra-env.sh  -e CASSANDRA_BROADCAST_ADDRESS=192.168.56.103 -p 7000:7000 cassandra:3.9
 
 
 

@@ -3,7 +3,7 @@
 * message to display.
 *@
 @import com.websudos.phantom.dsl.ListResult
-@(pins: ListResult[Pin])
+@(pins: ListResult[Pin], pagingState: String)
 
 @*
 * Call the `main` template with two arguments. The first
@@ -18,7 +18,7 @@
         @for(pin <- pins.records){
 
         }
-            <input type="hidden" value="@pins.result.toString">
+            <input type="hidden" value="@pagingState">
         </div>
     </div>
 
