@@ -1,0 +1,90 @@
+# http://www.thisprogrammingthing.com/2015/multiple-vagrant-vms-in-one-vagrantfile/
+
+Vagrant.configure("2") do |config|
+  # https://docs.vagrantup.com.
+  # boxes at https://atlas.hashicorp.com/search.
+  # config.vm.box = "ubuntu/trusty64"
+
+  # config.vm.network "forwarded_port", guest: 80, host: 8080
+  # config.vm.network "private_network", ip: "192.168.10.14"
+
+  config.vm.define "web3" do |web3|
+
+    web3.vm.box = "ubuntu/trusty64"    
+    web3.vm.hostname = 'web3'
+    web3.vm.network :private_network, ip: "192.168.56.103"
+
+    web3.vm.provider :virtualbox do |v|
+      # v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      v.customize ["modifyvm", :id, "--memory", 1024]
+      v.customize ["modifyvm", :id, "--name", "web3"]
+    end
+    config.vm.provision "shell", inline: <<-SHELL
+      sudo su
+      apt-get update
+      apt -y install docker.io
+      service docker start
+      export DOCKER_IP='192.168.56.103'
+      docker run -d --net=host --name consul consul agent -bind=$DOCKER_IP -retry-join=192.168.56.104
+      docker run -d --name=registrator --net=host --volume=/var/run/docker.sock:/tmp/docker.sock gliderlabs/registrator:latest consul://127.0.0.1:8500
+      docker run -d --name play-pin -p 8080:9000 isac/play-pin
+
+      docker run --name cassandra -d -v /data:/var/lib/cassandra -P -e MAX_HEAP_SIZE=256M -e HEAP_NEWSIZE=51M -e LISTEN_ADDRESS=192.168.56.103 oscerd/cassandra
+    
+    SHELL
+  end
+
+  config.vm.define "web1" do |web1|
+
+    web1.vm.box = "ubuntu/trusty64"    
+    web1.vm.hostname = 'web1'
+    web1.vm.network :private_network, ip: "192.168.56.101"
+
+    web1.vm.provider :virtualbox do |v|
+      # v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      v.customize ["modifyvm", :id, "--memory", 1024]
+      v.customize ["modifyvm", :id, "--name", "web1"]
+    end
+    
+    config.vm.provision "shell", inline: <<-SHELL
+      sudo su
+      apt-get update
+      apt -y install docker.io
+      service docker start
+      wget -O /usr/local/bin/weave https://github.com/weaveworks/weave/releases/download/latest_release/weave
+      docker run -d --net=host --name consul consul agent -bind=$DOCKER_IP -retry-join=192.168.56.104
+      docker run -d --name=registrator --net=host --volume=/var/run/docker.sock:/tmp/docker.sock gliderlabs/registrator:latest consul://127.0.0.1:8500
+      docker run -d --name play-pin -p 8080:9000 isac/play-pin
+      docker run --name cassandra -d -v /data:/var/lib/cassandra -P -e MAX_HEAP_SIZE=256M -e HEAP_NEWSIZE=51M -e LISTEN_ADDRESS=192.168.56.101 -e SEEDS=192.168.56.102,192.168.56.103 oscerd/cassandra
+
+    SHELL
+  end
+
+  config.vm.define "web2" do |web2|
+
+    web2.vm.box = "ubuntu/trusty64"    
+    web2.vm.hostname = 'web2'
+    web2.vm.network :private_network, ip: "192.168.56.102"
+
+    web2.vm.provider :virtualbox do |v|
+      # v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      v.customize ["modifyvm", :id, "--memory", 1024]
+      v.customize ["modifyvm", :id, "--name", "web2"]
+    end
+    config.vm.provision "shell", inline: <<-SHELL
+      sudo su
+      apt-get update
+      apt -y install docker.io
+      service docker start
+      export DOCKER_IP='192.168.56.102'
+      docker run -d --net=host --name consul consul agent -bind=$DOCKER_IP -retry-join=192.168.56.104
+      docker run -d --name=registrator --net=host --volume=/var/run/docker.sock:/tmp/docker.sock gliderlabs/registrator:latest consul://127.0.0.1:8500
+      docker run -d --name play-pin -p 8080:9000 isac/play-pin
+      docker run --name cassandra -d -v /data:/var/lib/cassandra -P -e MAX_HEAP_SIZE=256M -e HEAP_NEWSIZE=51M -e LISTEN_ADDRESS=192.168.56.102 -e SEEDS=192.168.56.101,192.168.56.103 oscerd/cassandra
+
+    SHELL
+  end
+
+
+
+end
