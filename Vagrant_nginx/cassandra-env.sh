@@ -71,7 +71,7 @@ calculate_heap_sizes()
         max_heap_size_in_mb="$quarter_system_memory_in_mb"
     fi
     # MAX_HEAP_SIZE="${max_heap_size_in_mb}M"
-        MAX_HEAP_SIZE = "512M"
+    MAX_HEAP_SIZE = "256M"
 
 
     # Young gen: min(max_sensible_per_modern_cpu_core * num_cores, 1/4 * heap size)
@@ -87,7 +87,7 @@ calculate_heap_sizes()
         # HEAP_NEWSIZE="${desired_yg_in_mb}M"
     # fi
 
-    HEAP_NEWSIZE = "128M"
+    HEAP_NEWSIZE = "51M"
 }
 
 # Determine the sort of JVM we'll be running on.

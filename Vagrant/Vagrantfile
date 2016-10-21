@@ -31,8 +31,7 @@ Vagrant.configure("2") do |config|
       docker run -d --net=host --name consul consul agent -bind=$DOCKER_IP -retry-join=192.168.56.104
       docker run -d --name=registrator --net=host --volume=/var/run/docker.sock:/tmp/docker.sock gliderlabs/registrator:latest consul://127.0.0.1:8500
       docker run -d --name play-pin -p 8080:9000 isac/play-pin
-
-      weave run 10.2.1.3/24 --name cassandra -d -v /data:/var/lib/cassandra -P -e MAX_HEAP_SIZE=256M -e HEAP_NEWSIZE=51M -e SEEDS=0.2.1.3 LISTEN_ADDRESS=10.2.1.3 oscerd/cassandra
+      weave run 10.2.1.3/24 --name cassandra -d -v /data:/var/lib/cassandra -v /../vagrant/cassandra-env.sh:/etc/cassandra/cassandra-env.sh  -e CASSANDRA_LISTEN_ADDRESS=10.2.1.3  -P cassandra:3.9
     
     SHELL
   end
@@ -61,7 +60,7 @@ Vagrant.configure("2") do |config|
       docker run -d --net=host --name consul consul agent -bind=$DOCKER_IP -retry-join=192.168.56.104
       docker run -d --name=registrator --net=host --volume=/var/run/docker.sock:/tmp/docker.sock gliderlabs/registrator:latest consul://127.0.0.1:8500
       docker run -d --name play-pin -p 8080:9000 isac/play-pin
-      weave run 10.2.1.1/24 --name cassandra -d -v /data:/var/lib/cassandra -P -e MAX_HEAP_SIZE=256M -e HEAP_NEWSIZE=51M -e SEEDS=10.2.1.1.1,10.2.1.3 -e LISTEN_ADDRESS=10.2.1.1 oscerd/cassandra
+      weave run 10.2.1.1/24  --name cassandra -d -v /data:/var/lib/cassandra -v /../vagrant/cassandra-env.sh:/etc/cassandra/cassandra-env.sh  -e CASSANDRA_LISTEN_ADDRESS=10.2.1.1  -e CASSANDRA_SEEDS=10.2.1.3 -P cassandra:3.9
 
     SHELL
   end
@@ -89,7 +88,7 @@ Vagrant.configure("2") do |config|
       docker run -d --net=host --name consul consul agent -bind=$DOCKER_IP -retry-join=192.168.56.104
       docker run -d --name=registrator --net=host --volume=/var/run/docker.sock:/tmp/docker.sock gliderlabs/registrator:latest consul://127.0.0.1:8500
       docker run -d --name play-pin -p 8080:9000 isac/play-pin
-      weave run 10.2.1.2/24 --name cassandra -d -v /data:/var/lib/cassandra -P -e MAX_HEAP_SIZE=256M -e HEAP_NEWSIZE=51M -e SEEDS=10.2.1.2.1,10.2.1.3 -e LISTEN_ADDRESS=10.2.1.2 oscerd/cassandra
+      weave run 10.2.1.2/24  --name cassandra -d -v /data:/var/lib/cassandra -v /../vagrant/cassandra-env.sh:/etc/cassandra/cassandra-env.sh  -e CASSANDRA_LISTEN_ADDRESS=10.2.1.2  -e CASSANDRA_SEEDS=10.2.1.3 -P cassandra:3.9
 
 
     SHELL

@@ -17,7 +17,7 @@ consul : 0.7.0
 
 consul-template -consul=192.168.56.104:8500 -template "/etc/consul-templates/app.conf.tmpl:/etc/nginx/conf.d/app.conf:service nginx restart || true" &
 
-docker run --name cassandra -d -v /data:/var/lib/cassandra -e CASSANDRA_BROADCAST_ADDRESS=192.168.56.103 -p 7000:7000 cassandra:3.9
+docker run --name cassandra -d -v /data:/var/lib/cassandra -v -e CASSANDRA_BROADCAST_ADDRESS=192.168.56.103 -P cassandra:3.9
 
 docker run --name cassandra -d -v /data:/var/lib/cassandra -e CASSANDRA_BROADCAST_ADDRESS=192.168.56.101 -p 7000:7000 -e CASSANDRA_SEEDS=192.168.56.103 cassandra:3.9
 
@@ -38,8 +38,20 @@ docker run -it --link cassandra:cassandra --rm cassandra cqlsh cassandra
 
 docker exec -it cassandra bash
 
-docker exec -ti cassandra /opt/cassandra/bin/nodetool status
+docker exec -ti cassandra /etc/cassandra/bin/nodetool status
 
+
+
+weave run 10.2.1.3/24 --name cassandra -d -v /data:/var/lib/cassandra -v /../vagrant/cassandra-env.sh:/etc/cassandra/cassandra-env.sh  -e CASSANDRA_LISTEN_ADDRESS=10.2.1.3 -e CASSANDRA_BROADCAST_ADDRESS=192.168.56.103 -P cassandra:3.9
+
+weave run 10.2.1.3/24 --name cassandra -d -v /data:/var/lib/cassandra -v /../vagrant/cassandra-env.sh:/etc/cassandra/cassandra-env.sh  -e CASSANDRA_LISTEN_ADDRESS=10.2.1.3  -P cassandra:3.9
+
+
+weave run 10.2.1.1/24  --name cassandra -d -v /data:/var/lib/cassandra -v /../vagrant/cassandra-env.sh:/etc/cassandra/cassandra-env.sh  -e CASSANDRA_LISTEN_ADDRESS=10.2.1.1 -e CASSANDRA_BROADCAST_ADDRESS=192.168.56.101 -e CASSANDRA_SEEDS=10.2.1.3 -P cassandra:3.9
+
+weave run 10.2.1.1/24  --name cassandra -d -v /data:/var/lib/cassandra -v /../vagrant/cassandra-env.sh:/etc/cassandra/cassandra-env.sh  -e CASSANDRA_LISTEN_ADDRESS=10.2.1.1 -e CASSANDRA_BROADCAST_ADDRESS=192.168.56.101 -P cassandra:3.9
+
+weave run 10.2.1.1/24  --name cassandra -d -v /data:/var/lib/cassandra -v /../vagrant/cassandra-env.sh:/etc/cassandra/cassandra-env.sh  -e CASSANDRA_LISTEN_ADDRESS=10.2.1.1  -e CASSANDRA_SEEDS=10.2.1.3 -P cassandra:3.9
 
 
 
