@@ -1,4 +1,4 @@
-name := """play-pin"""
+name := """isac/play-pin"""
 
 version := "1.1"
 
