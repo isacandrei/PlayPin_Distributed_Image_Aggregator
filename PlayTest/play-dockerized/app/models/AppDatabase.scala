@@ -9,7 +9,7 @@ import scala.concurrent.duration._
 
 object Defaults {
 
-    val hosts = Seq("10.2.1.1","10.2.1.2","10.2.1.3")
+    val hosts = Seq("cassandra.weave.local")
     val connector = ContactPoints(hosts).keySpace("playpin", autoinit = true)
 }
 
