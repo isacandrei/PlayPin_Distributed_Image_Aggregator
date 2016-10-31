@@ -60,20 +60,24 @@ abstract class ConcretePins extends Pins with RootConnector {
                 .future()
     }
 
+    //not used
     def getRecords(start: Int, limit: Int): Future[Iterator[Pin]] = {
         select.fetchEnumerator run Iteratee.slice(start, limit)
     }
 
     def getAll(board: String): Future[List[Pin]] = {
-        select.where(_.boardName eqs board).fetch()
+        select.where(_.boardName eqs board).consistencyLevel_=(ConsistencyLevel.ONE).fetch()
     }
 
+
+    //not used
     def getPage(limit: Int, board: String, state: PagingState): Future[(ListResult[Pin],PagingState)] = {
         select.where(_.boardName eqs board).limit(limit).fetchRecord(_.setPagingState(state)).map(
             res => (res, res.pagingState)
         )
     }
 
+    //not used
     def getFirstPage(limit: Int, board: String): Future[(ListResult[Pin],PagingState)] = {
         select.where(_.boardName eqs board).limit(limit).fetchRecord().map(
             res => (res, res.pagingState)
