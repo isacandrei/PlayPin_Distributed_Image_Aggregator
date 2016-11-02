@@ -28,3 +28,4 @@ POST    /upload-pin                 controllers.PinController.addPin
 
 #GET     /ws/getNewImages            controllers.WebSocketsController.echo
 GET     /socket                     controllers.WebSocketsController.socket
+POST    /publish/:channel           controllers.WebSocketsController.publish(channel)

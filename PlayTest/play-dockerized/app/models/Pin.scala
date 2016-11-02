@@ -66,7 +66,7 @@ abstract class ConcretePins extends Pins with RootConnector {
     }
 
     def getAll(board: String): Future[List[Pin]] = {
-        select.where(_.boardName eqs board).consistencyLevel_=(ConsistencyLevel.ONE).fetch()
+        select.where(_.boardName eqs board).fetch()
     }
 
 

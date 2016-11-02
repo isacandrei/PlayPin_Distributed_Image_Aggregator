@@ -36,7 +36,7 @@ abstract class ConcreteBoards extends Boards with RootConnector {
     }
 
     def getAll(): Future[List[String]] = {
-        select(_.name).consistencyLevel_=(ConsistencyLevel.ONE).fetch()
+        select(_.name).fetch()
     }
 
 }

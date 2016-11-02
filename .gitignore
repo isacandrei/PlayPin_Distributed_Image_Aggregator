@@ -49,4 +49,6 @@ dist
 /play-s3
 /wacc-play-example   
 /phantom-activator-template
-Vagrant_nginx/etc 
+Vagrant_nginx/etc
+
+ws-redis-pubsub 

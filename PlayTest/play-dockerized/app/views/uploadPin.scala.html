@@ -1,7 +1,7 @@
 @(boards : List[String])
 
 @pageLayout("Upload pin"){
-        <form id="upload-image-form" class="col-md-4" action="/upload2" method="post" enctype="multipart/form-data">
+        <form id="upload-image-form" class="col-md-4" action="#" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="board">Pin board</label>
                 <select id="board" name="board">
@@ -33,26 +33,26 @@
 
     <script type="text/javascript">
 
-            function webSocketImageUpload(){
-
-//                var webSocket = $.simpleWebSocket({url: " ws://" + window.location.host + "/socket"});
-
-                function sendMessage(msg) {
-                    webSocketReceive.send(msg).done(function () {
-                        console.log(" Message \"" + msg + "\" sent successfully");
-                    }).fail(function (e) {
-                        console.log(" Could not send message, " + e);
-                    });
-                }
+//            function webSocketImageUpload(){
 //
-                var pin = {
-                    board: $("#board").val(),
-                    title: $("#pin-title").val(),
-                    description: $("#pin-description").val(),
-                    url: $("#url").val()
-                };
-                sendMessage(pin);
-            }
+//                var webSocket = $.simpleWebSocket({url: " ws://" + window.location.host + "/socket"});
+//
+//                function sendMessage(msg) {
+//                    webSocketReceive.send(msg).done(function () {
+//                        console.log(" Message \"" + msg + "\" sent successfully");
+//                    }).fail(function (e) {
+//                        console.log(" Could not send message, " + e);
+//                    });
+//                }
+//
+//                var pin = {
+//                    board: $("#board").val(),
+//                    title: $("#pin-title").val(),
+//                    description: $("#pin-description").val(),
+//                    url: $("#url").val()
+//                };
+//                sendMessage(pin);
+//            }
 
             $('#file').on("change", function (event) {
 
@@ -104,7 +104,7 @@
                     },
                     success: function (data) {
                         //call your jQuery action here
-                        webSocketImageUpload();
+                        publishPin();
                         alert("success");
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
@@ -113,5 +113,19 @@
                 });
                 return false;
             });
+
+            function publishPin(){
+                var publishUrl = "publish" + "/" + $("#board").val()
+                console.log(publishUrl)
+                var pin = {
+                    board: $("#board").val(),
+                    title: $("#pin-title").val(),
+                    description: $("#pin-description").val(),
+                    url: $("#url").val()
+                };
+                jQuery.post(publishUrl, "message="+ JSON.stringify(pin) ).success(function(){
+                    alert("sent")
+                })
+            }
     </script>
 }

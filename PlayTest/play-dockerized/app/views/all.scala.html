@@ -2,7 +2,7 @@
 * This template takes a single argument, a String containing a
 * message to display.
 *@
-@(pins: List[Pin])
+@(pins: List[Pin], board: String)
 @*//@(newPin: String)*@
 @*
 * Call the `main` template with two arguments. The first
@@ -10,7 +10,7 @@
 * argument is an `Html` object containing the body of the page.
 *@
 
-@pageLayout("Board") {
+@pageLayout(board) {
     <div id="wrapper">
         <div id="response"></div>
         <div class="card-columns">
@@ -26,16 +26,15 @@
 
 
 <script>
-
-
-        function webSocketImageDisplay(){
-
-
-
-            webSocketReceive.listen(function (message) {
-                console.log(" Received " + message);
-
-                var pin = JSON.parse(message);
+        var socket = null
+        function subscribe(channel) {
+            var subscribeUrl = "/socket" + "?channel=" + channel
+            console.log("Subscribed to: " + subscribeUrl)
+            socket = new WebSocket("ws://" + window.location.host + subscribeUrl)
+            socket.onmessage = function(event) {
+                console.log(" Received " + event.data);
+//
+                var pin = JSON.parse(event.data);
                 var pinHtml = "<div class=\"grid-item\">" +
                 "    <h3>" + pin.title + "<\/h3>" +
                 "    <img class=\"\" src=\" " + pin.url + "\" alt=\"Card image\">" +
@@ -43,12 +42,41 @@
                 "        <p class=\"\">"+ pin.description+ "<\/p>" +
                 "    <\/span>" +
                 "<\/div>";
-
+//
                 $(".card-columns").first().prepend(pinHtml);
-            });
+//                $("#messages" ).prepend("<div>" + event.data + "</div>")
+            }
+            socket.onclose = function(event) {
+                console.log(event)
+            }
         }
 
         $(document).ready(function(){
-            webSocketImageDisplay()
-        });
+            var channel = $(".section-heading").html()
+            subscribe(channel)
+        })
+
+//        function webSocketImageDisplay(){
+//
+//
+//
+//            webSocketReceive.listen(function (message) {
+//                console.log(" Received " + message);
+//
+//                var pin = JSON.parse(message);
+//                var pinHtml = "<div class=\"grid-item\">" +
+//                "    <h3>" + pin.title + "<\/h3>" +
+//                "    <img class=\"\" src=\" " + pin.url + "\" alt=\"Card image\">" +
+//                "    <span class=\"\">" +
+//                "        <p class=\"\">"+ pin.description+ "<\/p>" +
+//                "    <\/span>" +
+//                "<\/div>";
+//
+//                $(".card-columns").first().prepend(pinHtml);
+//            });
+//        }
+//
+//        $(document).ready(function(){
+//            webSocketImageDisplay()
+//        });
 </script>

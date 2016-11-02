@@ -2,7 +2,7 @@
     * Created by lex on 01/10/16.
     */
 
-var webSocketReceive = $.simpleWebSocket({url: " ws://" + window.location.host + "/socket"});
+// var webSocketReceive = $.simpleWebSocket({url: " ws://" + window.location.host + "/socket"});
 
 $(document).ready(function(){
 
@@ -26,6 +26,7 @@ function applyAjax(container){
 
 function callPage(pageRefInput, ws){
     // Using the core $.ajax() method
+    if(typeof socket != 'undefined') socket.close()
     $.ajax({
         url: pageRefInput,
 

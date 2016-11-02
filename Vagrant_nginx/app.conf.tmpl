@@ -1,5 +1,5 @@
 upstream app {
-  	least_conn;
+  	ip_hash;
   	{{range service "play-pin"}}server {{.Address}}:{{.Port}} max_fails=3 fail_timeout=60 weight=1;
   	{{else}}server 127.0.0.1:65535; # force a 502{{end}}
 }	
@@ -11,5 +11,12 @@ server{
 	location / {
         proxy_pass http://app;
     }
+
+    location /socket {
+	    proxy_pass http://app;
+	    proxy_http_version 1.1;
+	    proxy_set_header Upgrade $http_upgrade;
+	    proxy_set_header Connection "upgrade";
+	}
 }
 
