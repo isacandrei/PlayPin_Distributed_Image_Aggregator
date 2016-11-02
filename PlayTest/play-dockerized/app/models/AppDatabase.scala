@@ -11,8 +11,8 @@ import scala.concurrent.duration._
 object Defaults {
     //CREATE KEYSPACE playpin WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 2 };
     //I have tried to make the autoinit of the keyspake work, but the lack of documentation forced me to leave it manual.
-//    val hosts = Tools.getCassandraList
-    val hosts = Seq("localhost")
+    val hosts = Tools.getCassandraList
+//    val hosts = Seq("localhost")
 
     val connector = ContactPoints(hosts).keySpace("playpin", autoinit = true)
 }
