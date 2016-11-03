@@ -50,5 +50,6 @@ dist
 /wacc-play-example   
 /phantom-activator-template
 Vagrant_nginx/etc
-
 ws-redis-pubsub 
+
+Documentation.pages

@@ -30,7 +30,7 @@ class WebSocketsController @Inject()(implicit actorSystem: ActorSystem, material
 //    }
     val log = Logger.logger
 
-    val chat = actorSystem.actorOf(Props[Chat], "chat")
+//    val chat = actorSystem.actorOf(Props[Chat], "chat")
 
 //    val redis = RedisClient("127.0.0.1",32768)
     val redis = RedisClient("redis.weave.local",6379)
