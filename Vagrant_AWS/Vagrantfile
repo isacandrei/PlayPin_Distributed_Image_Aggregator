@@ -1,0 +1,70 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+Vagrant.configure("2") do |config|
+  
+  config.vm.box = "aws-dummy"
+
+  config.vm.define "nginx" do |nginx|
+    nginx.vm.box = "aws-dummy"    
+    nginx.vm.hostname = 'nginx'
+    nginx.vm.provider :aws do |aws, override|
+      aws.access_key_id = ENV['AWS_KEY']
+      aws.secret_access_key = ENV['AWS_SECRET']
+      aws.security_groups = ENV['AWS_GROUP']
+      aws.keypair_name = ENV['AWS_KEYNAME']
+      aws.region = "eu-central-1"
+      aws.instance_type = "t2.micro"
+      aws.ami = "ami-9c09f0f3"
+      aws.private_ip_address = "172.31.25.5"
+      override.ssh.username = "ubuntu"
+      override.ssh.private_key_path = ENV['AWS_KEYPATH']
+    end
+    nginx.vm.provision "shell", inline: <<-SHELL
+      sudo su
+      apt-get update
+      apt -y install docker.io
+      wget -O /usr/local/bin/weave https://github.com/weaveworks/weave/releases/download/latest_release/weave
+      chmod a+x /usr/local/bin/weave
+      weave launch
+      weave run 10.2.1.1/24 -d --name nginx -v /vagrant/app.conf:/etc/nginx/conf.d/app.conf -p 80:80 nginx
+    SHELL
+  end
+
+
+  config.vm.define "web1" do |web1|
+    web1.vm.box = "aws-dummy"    
+    web1.vm.hostname = 'web1'
+    web1.vm.provider :aws do |aws, override|
+      aws.access_key_id = ENV['AWS_KEY']
+      aws.secret_access_key = ENV['AWS_SECRET']
+      aws.security_groups = ENV['AWS_GROUP']
+      aws.keypair_name = ENV['AWS_KEYNAME']
+      aws.region = "eu-central-1"
+      aws.instance_type = "t2.micro"
+      aws.ami = "ami-9c09f0f3"
+      aws.private_ip_address = "172.31.25.4"
+      override.ssh.username = "ubuntu"
+      override.ssh.private_key_path = ENV['AWS_KEYPATH']
+    end
+    web1.vm.provision "shell", inline: <<-SHELL
+      sudo su
+      apt-get update
+      apt -y install docker.io
+      wget -O /usr/local/bin/weave https://github.com/weaveworks/weave/releases/download/latest_release/weave
+      chmod a+x /usr/local/bin/weave
+      weave launch 172.31.25.5
+      weave run 10.2.1.2/24  -d --name play-pin -h app.weave.local -p 8080:9000 isac/play-pin:1.7
+      weave run 10.2.1.3/24  -d --name cassandra -h cassandra1.weave.local -v /data:/var/lib/cassandra -v /vagrant/cassandra-env.sh:/etc/cassandra/cassandra-env.sh  -e CASSANDRA_LISTEN_ADDRESS=10.2.1.3 cassandra:3.9
+    SHELL
+  end
+
+end
+
+#get public IP
+#export DOCKER_IP=`curl -s http://ipinfo.io/ip`
+
