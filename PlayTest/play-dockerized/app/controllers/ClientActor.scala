@@ -1,11 +1,6 @@
 package controllers
 
-/**
-  * Created by lex on 17/10/16.
-  */
-
 import java.net.InetSocketAddress
-
 import akka.actor._
 import play.api.Logger
 import play.api.libs.json.JsValue
@@ -13,6 +8,9 @@ import redis.RedisClient
 import redis.actors.RedisSubscriberActor
 import redis.api.pubsub.{Message, PMessage}
 
+/**
+  * Created by lex on 17/10/16.
+  */
 class ClientActor(redis: RedisClient, out: ActorRef,
                   channels: Seq[String] = Nil, patterns: Seq[String] = Nil) extends RedisSubscriberActor(
     new InetSocketAddress(redis.host, redis.port),

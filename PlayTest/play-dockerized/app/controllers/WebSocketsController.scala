@@ -2,17 +2,12 @@ package controllers
 
 import javax.inject._
 
-import play.api.mvc._
 import akka.actor._
 import akka.stream.Materializer
-import models.Pin
 import play.api.Logger
-import play.api.libs.streams.ActorFlow
 import play.api.Play.current
 import play.api.mvc._
-import play.api.libs.iteratee._
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
-import play.api.libs.json.JsValue
 import play.api.libs.ws.WSClient
 import redis.RedisClient
 
@@ -24,25 +19,10 @@ import scala.concurrent.Future
 @Singleton
 class WebSocketsController @Inject()(implicit actorSystem: ActorSystem, materializer: Materializer, ws: WSClient) extends Controller {
 
-//    def echo = WebSocket.accept[String, String] { request =>   // WebSocket.accept[Input, Output]
-//        // Create a Flow based on an actor
-//        ActorFlow.actorRef(out => CustomWebSocketActor.props(out)) // Akka Actor based using CustomWebSocketActor, results in a Flow[Input, Output]
-//    }
     val log = Logger.logger
 
-//    val chat = actorSystem.actorOf(Props[Chat], "chat")
-
-//    val redis = RedisClient("127.0.0.1",32768)
-    val redis = RedisClient("redis.weave.local",6379)
-
-    /*
-     Specifies how to wrap an out-actor that will represent
-     WebSocket connection for a given request.
-    */
-//    def socket (board: String) = WebSocket.accept[JsValue, JsValue] { request =>
-//        ActorFlow.actorRef( out => Props(new ClientActor(out, chat)))
-//
-//    }
+    val redis = RedisClient("127.0.0.1",32768)
+//    val redis = RedisClient("redis.weave.local",6379)
 
     def socket = WebSocket.tryAcceptWithActor[String, String] { request =>
         def props(channel: String)(out: ActorRef) = Props(classOf[ClientActor], redis, out, Seq(channel), Nil)

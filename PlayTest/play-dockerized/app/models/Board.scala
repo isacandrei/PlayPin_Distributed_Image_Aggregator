@@ -4,9 +4,8 @@ import scala.concurrent.Future
 import com.websudos.phantom.dsl._
 
 case class Board(
-                        name: String,
-                        rowName: String = "boards"
-
+                name: String,
+                rowName: String = "boards"
               )
 
 class Boards extends CassandraTable[ConcreteBoards, Board] {
