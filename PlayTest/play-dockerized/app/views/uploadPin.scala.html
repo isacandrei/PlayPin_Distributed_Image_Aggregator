@@ -1,7 +1,8 @@
 @(boards : List[String])
 
 @pageLayout("Upload pin"){
-        <form id="upload-image-form" class="col-md-4" action="#" method="post" enctype="multipart/form-data">
+    <div class="col-md-4 uploadPin-container">
+        <form id="upload-image-form" action="#" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="board">Pin board</label>
                 <select id="board" name="board">
@@ -20,39 +21,18 @@
             </div>
             <div class="form-group">
                 <label for="file">File input</label>
-                <label class="btn btn-default btn-file">
-                    Browse <input type="file"  id="file" name="file" style="display: none;">
-                </label>
+                @*<label class="btn btn-default btn-file">*@
+                     <input type="file"  id="file" name="file">
+                @*</label>*@
             </div>
             <input type="hidden" id="url">
             <div class="form-group">
                 <input type="submit" class="form-control" id="submit" name="" value="Upload" />
             </div>
         </form>
-
+    </div>
 
     <script type="text/javascript">
-
-//            function webSocketImageUpload(){
-//
-//                var webSocket = $.simpleWebSocket({url: " ws://" + window.location.host + "/socket"});
-//
-//                function sendMessage(msg) {
-//                    webSocketReceive.send(msg).done(function () {
-//                        console.log(" Message \"" + msg + "\" sent successfully");
-//                    }).fail(function (e) {
-//                        console.log(" Could not send message, " + e);
-//                    });
-//                }
-//
-//                var pin = {
-//                    board: $("#board").val(),
-//                    title: $("#pin-title").val(),
-//                    description: $("#pin-description").val(),
-//                    url: $("#url").val()
-//                };
-//                sendMessage(pin);
-//            }
 
             $('#file').on("change", function (event) {
 
@@ -68,7 +48,6 @@
                     contentType: false,
                     processData: false,
                     beforeSend: function (data) {
-//                        alert('Are you sure you want to upload document?');
                     },
                     success: function (data) {
                         //call your jQuery action here
@@ -100,7 +79,6 @@
                     contentType: "application/json",
                     processData: false,
                     beforeSend: function (data) {
-//                        alert('Are you sure you want to upload document?');
                     },
                     success: function (data) {
                         //call your jQuery action here

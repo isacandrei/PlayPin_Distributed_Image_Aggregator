@@ -1,13 +1,20 @@
-@import controllers.HomeController
-
 @(imgs: Array[String])
 
 @pageLayout("Home") {
     <div id="wrapper">
-        <div class="grid" data-masonry='{ "itemSelector": ".grid-item", "columnWidth": 200 }'>
+        <div id="pinto-container">
         @for(img <- imgs) {
             @card(img)
         }
         </div>
     </div>
 }
+
+<script>
+        $(document).ready(function() {
+            setPinLayout()
+        });
+
+        $(document).trigger('resize');
+
+</script>
