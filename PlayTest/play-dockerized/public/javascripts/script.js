@@ -49,3 +49,16 @@ function callPage(pageRefInput, ws){
         }
     });
 }
+
+function setPinLayout(){
+    $('#pinto-container').pinto({
+        itemWidth:250,
+        gapX:10,
+        gapY:20,
+    });
+}
+
+
+
+//******** design
+
