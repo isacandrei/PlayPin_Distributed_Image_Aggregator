@@ -21,8 +21,8 @@ class WebSocketsController @Inject()(implicit actorSystem: ActorSystem, material
 
     val log = Logger.logger
 
-    val redis = RedisClient("127.0.0.1",32768)
-//    val redis = RedisClient("redis.weave.local",6379)
+//    val redis = RedisClient("127.0.0.1",32768)
+    val redis = RedisClient("redis.weave.local",6379)
 
     def socket = WebSocket.tryAcceptWithActor[String, String] { request =>
         def props(channel: String)(out: ActorRef) = Props(classOf[ClientActor], redis, out, Seq(channel), Nil)
