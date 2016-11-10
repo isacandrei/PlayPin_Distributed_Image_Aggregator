@@ -31,6 +31,7 @@
 
                 $("#pinto-container").first().prepend(pinHtml);
                 setPinLayout();
+                $(document).trigger('resize');
             }
             socket.onclose = function(event) {
                 console.log(event)
