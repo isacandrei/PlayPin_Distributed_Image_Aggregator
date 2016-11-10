@@ -15,6 +15,6 @@ COPY ./app.conf.tmpl /etc/consul-templates/app.conf
 RUN rm /etc/nginx/conf.d/*
 
 #Default Variables
-ENV CONSUL 192.168.56.104:8500
+ENV CONSUL 172.31.25.5:8500
 
 CMD service nginx start && consul-template -consul=$CONSUL -template "/etc/consul-templates/app.conf:/etc/nginx/conf.d/app.conf:service nginx restart || true"
