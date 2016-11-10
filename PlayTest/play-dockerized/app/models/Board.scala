@@ -30,7 +30,7 @@ abstract class ConcreteBoards extends Boards with RootConnector {
     def store(board: Board): Future[ResultSet] = {
         insert.value(_.rowName, board.rowName)
                 .value(_.name, board.name)
-                .consistencyLevel_=(ConsistencyLevel.ALL)
+                .consistencyLevel_=(ConsistencyLevel.ONE)
                 .future()
     }
 

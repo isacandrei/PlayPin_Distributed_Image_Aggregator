@@ -55,7 +55,7 @@ abstract class ConcretePins extends Pins with RootConnector {
                 .value(_.date, pin.date)
                 .value(_.pinId, pin.pinId)
                 .value(_.data, pin.data)
-                .consistencyLevel_=(ConsistencyLevel.ALL)
+                .consistencyLevel_=(ConsistencyLevel.ONE)
                 .future()
     }
 
