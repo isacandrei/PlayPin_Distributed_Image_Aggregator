@@ -8,6 +8,7 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 GET     /home                       controllers.HomeController.home
 GET     /createBoard                controllers.BoardController.createBoard
 GET     /                           controllers.BoardController.showBoards
+GET     /show-boards                controllers.BoardController.showBoardsAjax
 POST    /add-board                  controllers.BoardController.addBoard
 GET     /board/:board               controllers.PinController.getAllPins(board : String)
 POST    /upload                     controllers.PinController.upload

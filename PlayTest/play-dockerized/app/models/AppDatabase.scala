@@ -12,8 +12,8 @@ object Defaults {
     //CREATE KEYSPACE playpin WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 2 };
     //I have tried to make the autoinit of the keyspake work, but the lack of documentation forced me to leave it manual.
 //    val hosts = Tools.getCassandraList
-//    val hosts = Seq("localhost")
-    val hosts = Seq("cassandra1.weave.local", "cassandra2.weave.local", "cassandra3.weave.local")
+    val hosts = Seq("localhost")
+//    val hosts = Seq("cassandra1.weave.local", "cassandra2.weave.local", "cassandra3.weave.local")
 
     val connector = ContactPoints(hosts).keySpace("playpin", autoinit = true)
 }
