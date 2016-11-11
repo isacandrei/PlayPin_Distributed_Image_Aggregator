@@ -4,7 +4,7 @@ import javax.inject._
 
 import play.api.mvc._
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.{ExecutionContext}
 /**
  * This controller creates an `Action` to handle HTTP requests to the
  * application's home page.
@@ -19,7 +19,7 @@ class HomeController @Inject() (implicit exec: ExecutionContext) extends Control
    * a path of `/`.
    */
 
-    val imgs = Array("http://kurld.com/images/wallpapers/images/images-22.jpg",
+    val imgs = Array(
         "http://www.freedigitalphotos.net/images/img/homepage/87357.jpg",
         "http://121clicks.com/wp-content/uploads/2012/04/portrait_eyes_23.jpg",
         "http://cssdeck.com/uploads/media/items/6/6f3nXse.png",
@@ -51,11 +51,6 @@ class HomeController @Inject() (implicit exec: ExecutionContext) extends Control
         "http://121clicks.com/wp-content/uploads/2012/04/portrait_eyes_23.jpg",
         "http://vanimg.s3.amazonaws.com/portrait-20.jpg",
         "http://121clicks.com/wp-content/uploads/2012/04/portrait_eyes_23.jpg")
-
-
-    def index = Action {
-        Ok(views.html.index("."))
-    }
 
     def home = Action {
         Ok(views.html.home(imgs))

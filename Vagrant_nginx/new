@@ -37,6 +37,12 @@ docker run --name cassandra -d -v /data:/var/lib/cassandra -P -e MAX_HEAP_SIZE=2
 docker run -it --link cassandra:cassandra --rm cassandra cqlsh cassandra
 
 docker exec -it cassandra bash
+docker exec -it play-pin bash
+
+docker exec -it cassandra nodetool status 
+
+ALTER KEYSPACE "playpin" WITH REPLICATION =
+  { 'class' : 'SimpleStrategy', 'replication_factor' : 2 };
 
 docker exec -ti cassandra /etc/cassandra/bin/nodetool status
 

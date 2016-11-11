@@ -22,5 +22,7 @@ libraryDependencies ++= Seq(
     "com.websudos" %% "phantom-dsl" % PhantomVersion,
     "com.websudos" %% "phantom-reactivestreams" % PhantomVersion,
     "com.amazonaws" % "aws-java-sdk-osgi" % "1.11.39",
-    "com.typesafe.akka" %% "akka-actor" % "2.4.11"
+    "com.typesafe.akka" %% "akka-actor" % "2.4.11",
+    "com.github.etaty" %% "rediscala" % "1.6.0",
+    "com.ecwid.consul" % "consul-api" % "1.2.1"
 )

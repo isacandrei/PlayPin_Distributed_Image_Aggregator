@@ -1,7 +1,8 @@
 @(boards : List[String])
 
 @pageLayout("Upload pin"){
-        <form id="upload-image-form" class="col-md-4" action="/upload2" method="post" enctype="multipart/form-data">
+    <div class="col-md-4 uploadPin-container">
+        <form id="upload-image-form" action="#" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="board">Pin board</label>
                 <select id="board" name="board">
@@ -11,6 +12,12 @@
                 </select>
             </div>
             <div class="form-group">
+                <label for="file">File input</label>
+                @*<label class="btn btn-default btn-file">*@
+                <input type="file"  id="file" name="file">
+                @*</label>*@
+            </div>
+            <div class="form-group">
                 <label for="pin-title">Pin title</label>
                 <input type="text" id="pin-title" class="form-control" name="pinTitle" />
             </div>
@@ -18,40 +25,27 @@
                 <label for="pin-description">Pin description</label>
                 <textarea id="pin-description" class="form-control" name="pinDescription" placeholder="Your description here"></textarea>
             </div>
-            <div class="form-group">
-                <label for="file">File input</label>
-                <label class="btn btn-default btn-file">
-                    Browse <input type="file"  id="file" name="file" style="display: none;">
-                </label>
-            </div>
             <input type="hidden" id="url">
             <div class="form-group">
-                <input type="submit" class="form-control" id="submit" name="" value="Upload" />
+                <input type="submit" class="form-control" id="submit" name="" value="Upload" disabled/>
             </div>
         </form>
-
+    </div>
 
     <script type="text/javascript">
 
-            function webSocketImageUpload(){
-
-//                var webSocket = $.simpleWebSocket({url: " ws://" + window.location.host + "/socket"});
-
-                function sendMessage(msg) {
-                    webSocketReceive.send(msg).done(function () {
-                        console.log(" Message \"" + msg + "\" sent successfully");
-                    }).fail(function (e) {
-                        console.log(" Could not send message, " + e);
-                    });
-                }
-//
+            function publishPin(){
+                var publishUrl = "publish" + "/" + $("#board").val()
+                console.log(publishUrl)
                 var pin = {
                     board: $("#board").val(),
                     title: $("#pin-title").val(),
                     description: $("#pin-description").val(),
                     url: $("#url").val()
                 };
-                sendMessage(pin);
+                jQuery.post(publishUrl, "message="+ JSON.stringify(pin) ).success(function(){
+                    alert("sent")
+                })
             }
 
             $('#file').on("change", function (event) {
@@ -68,11 +62,11 @@
                     contentType: false,
                     processData: false,
                     beforeSend: function (data) {
-//                        alert('Are you sure you want to upload document?');
                     },
                     success: function (data) {
                         //call your jQuery action here
                         $("#url").val(data);
+                        $('#submit').prop('disabled', false);
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         alert(textStatus + ': ' + errorThrown);
@@ -81,7 +75,7 @@
                 return false;
             });
 
-            $('#submit').on("click", function (event) {
+            promise = $('#submit').on("click", function (event) {
                 event.stopPropagation(); // Stop stuff happening
                 event.preventDefault(); // Totally stop stuff happening
 
@@ -91,7 +85,7 @@
                     description: $("#pin-description").val(),
                     board: $("#board").val(),
                     url: $("#url").val()
-                }
+                };
 
                 $.ajax({
                     url: 'upload-pin',
@@ -100,11 +94,10 @@
                     contentType: "application/json",
                     processData: false,
                     beforeSend: function (data) {
-//                        alert('Are you sure you want to upload document?');
                     },
                     success: function (data) {
                         //call your jQuery action here
-                        webSocketImageUpload();
+                        publishPin();
                         alert("success");
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
@@ -113,5 +106,6 @@
                 });
                 return false;
             });
+
     </script>
 }

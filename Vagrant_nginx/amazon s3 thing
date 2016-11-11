@@ -1,0 +1,47 @@
+{
+  "Id": "Policy1477917409065",
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "Stmt1477917396602",
+      "Action": [
+        "s3:GetObject"
+      ],
+      "Effect": "Allow",
+      "Resource": "arn:aws:s3:::play-pin/*",
+      "Principal": "*"
+    }
+  ]
+}
+
+
+{
+  "Version": "2008-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowPublicRead",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "*"
+      },
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::play-pin/images/*"
+    }
+  ]
+}
+
+
+<CORSConfiguration> 
+<CORSRule> 
+<AllowedOrigin>*</AllowedOrigin> 
+<AllowedMethod>GET</AllowedMethod> 
+<MaxAgeSeconds>500</MaxAgeSeconds> 
+<AllowedHeader>*</AllowedHeader> 
+<ExposeHeader>x-amz-server-side-encryption</ExposeHeader> 
+</CORSRule> 
+<CORSRule> 
+<AllowedOrigin>http://192.168.56.104/</AllowedOrigin> 
+<AllowedMethod>HEAD</AllowedMethod> 
+</CORSRule> 
+</CORSConfiguration> 
+ 

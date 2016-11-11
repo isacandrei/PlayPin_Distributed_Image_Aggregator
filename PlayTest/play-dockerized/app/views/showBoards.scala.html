@@ -1,6 +1,26 @@
-@(boards: List[String])
-@pageLayout("Show boards") {
-    @for(board <- boards) {
-        <a href="/board/@board">@board</a>
+@(boards: List[String], initialCall: Boolean)
+
+
+@if(initialCall) {
+    @main("Play-pin") {
+        <section class=" col-md-4 showBoards-container">
+            <div class="row">
+                <h3 class="text-center">Show boards</h3>
+                <p class="text-center">Our creative team is making everything possible</p>
+            </div>
+            <div class="row">
+            @for(board <- boards) {
+                <a href="/board/@board">@board</a>
+            }
+            </div>
+        </section>
+    }
+} else {
+    @pageLayout("Show boards") {
+        <section class=" col-md-4 showBoards-container">
+            @for(board <- boards) {
+                <a href="/board/@board">@board</a>
+            }
+        </section>
     }
 }

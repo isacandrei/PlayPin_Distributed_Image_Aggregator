@@ -4,9 +4,8 @@ import scala.concurrent.Future
 import com.websudos.phantom.dsl._
 
 case class Board(
-                        name: String,
-                        rowName: String = "boards"
-
+                name: String,
+                rowName: String = "boards"
               )
 
 class Boards extends CassandraTable[ConcreteBoards, Board] {
@@ -31,7 +30,7 @@ abstract class ConcreteBoards extends Boards with RootConnector {
     def store(board: Board): Future[ResultSet] = {
         insert.value(_.rowName, board.rowName)
                 .value(_.name, board.name)
-                .consistencyLevel_=(ConsistencyLevel.ALL)
+                .consistencyLevel_=(ConsistencyLevel.ONE)
                 .future()
     }
 

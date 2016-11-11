@@ -3,13 +3,18 @@ package models
 import com.websudos.phantom.builder.query.CreateQuery
 import com.websudos.phantom.connectors.KeySpace
 import com.websudos.phantom.dsl._
+import utils.Tools
 
 import scala.concurrent.duration._
 
 
 object Defaults {
+    //CREATE KEYSPACE playpin WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 2 };
+    //I have tried to make the autoinit of the keyspake work, but the lack of documentation forced me to leave it manual.
+//    val hosts = Tools.getCassandraList
+//    val hosts = Seq("localhost")
+    val hosts = Seq("cassandra1.weave.local", "cassandra2.weave.local", "cassandra3.weave.local")
 
-    val hosts = Seq("10.2.1.1","10.2.1.2","10.2.1.3")
     val connector = ContactPoints(hosts).keySpace("playpin", autoinit = true)
 }
 
@@ -31,6 +36,3 @@ class AppDatabase(val keyspace: KeySpaceDef) extends Database(keyspace) {
 }
 
 object AppDatabase extends AppDatabase(Defaults.connector)
-
-
-//http://outworkers.com/blog/docker pspost/a-series-on-phantom-part-1-getting-started-with-phantom

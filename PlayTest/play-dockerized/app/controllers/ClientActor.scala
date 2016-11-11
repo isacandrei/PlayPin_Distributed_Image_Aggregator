@@ -1,24 +1,36 @@
 package controllers
 
+import java.net.InetSocketAddress
+import akka.actor._
+import play.api.Logger
+import play.api.libs.json.JsValue
+import redis.RedisClient
+import redis.actors.RedisSubscriberActor
+import redis.api.pubsub.{Message, PMessage}
+
 /**
   * Created by lex on 17/10/16.
   */
+class ClientActor(redis: RedisClient, out: ActorRef,
+                  channels: Seq[String] = Nil, patterns: Seq[String] = Nil) extends RedisSubscriberActor(
+    new InetSocketAddress(redis.host, redis.port),
+    channels,
+    patterns,
+    onConnectStatus = connected => { println(s"connected: $connected") }) {
 
-import akka.actor._
-import play.api.libs.json.JsValue
+    Logger.logger.debug(s"Started RedisSubscriberActor for channels: $channels")
 
-class ClientActor(out: ActorRef, chat: ActorRef) extends Actor {
+    def onMessage(message: Message) {
+        out ! message.data.decodeString("UTF-8")
+    }
 
-    chat ! Join
+    def onPMessage(pmessage: PMessage) {}
 
-    override def postStop() = chat ! Leave
+    override def onClosingConnectionClosed(): Unit = {
+        Logger.logger.debug(s"RedisSubscriberActor for channels: $channels is closing")
+    }
 
-    def receive = {
-        // this handles messages from the websocket
-        case text: JsValue =>
-            chat ! ClientSentMessage(text)
-
-        case ClientSentMessage(text) =>
-            out ! text
+    override def postStop() {
+        Logger.logger.debug(s"RedisSubscriberActor for channels: $channels is stopping")
     }
 }

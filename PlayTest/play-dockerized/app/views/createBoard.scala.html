@@ -1,5 +1,7 @@
 @pageLayout("Create board") {
-    <div class="col-md-4">
+
+
+    <div class="col-md-4 createBoard-container">
         <form action="/" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="board-name">Board name</label>
@@ -11,21 +13,20 @@
             </div>
         </form>
     </div>
-    <script>
+}
+
+<script>
             $('#submit').click(function (event) {
                 event.stopPropagation(); // Stop stuff happening
                 event.preventDefault(); // Totally stop stuff happening
 
                 $.ajax({
                     url: 'add-board',
-//                    data: {file : $("#file").get(0).files[0], name: $("#file").val()},
-//                    data: $("#file").get(0).files[0],
                     data: $("#board-name").val(),
                     type: 'POST',
                     contentType: false,
                     processData: false,
                     beforeSend: function (data) {
-//                        alert('Are you sure you want to upload document?');
                     },
                     success: function (data) {
                         //call your jQuery action here
@@ -37,5 +38,4 @@
                 });
                 return false;
             });
-    </script>
-}
+</script>

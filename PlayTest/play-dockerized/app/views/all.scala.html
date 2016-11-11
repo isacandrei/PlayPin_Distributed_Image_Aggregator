@@ -1,54 +1,49 @@
-@*
-* This template takes a single argument, a String containing a
-* message to display.
-*@
-@(pins: List[Pin])
-@*//@(newPin: String)*@
-@*
-* Call the `main` template with two arguments. The first
-* argument is a `String` with the title of the page, the second
-* argument is an `Html` object containing the body of the page.
-*@
+@(pins: List[Pin], board: String)
 
-@pageLayout("Board") {
+@pageLayout(board) {
+
     <div id="wrapper">
-        <div id="response"></div>
-        <div class="card-columns">
-            @for(pin <- pins) {
-                @card1(pin)
-            }
-        </div>
-        <div>
-            <textarea class="form-control" id="display-pin" rows="30" disabled></textarea>
+        <div id="pinto-container">
+        @for(pin <- pins) {
+            @card1(pin)
+        }
         </div>
     </div>
 }
 
-
 <script>
+        var socket = null;
+        function subscribe(channel) {
+            var subscribeUrl = "/socket" + "?channel=" + channel;
+            console.log("Subscribed to: " + subscribeUrl);
+            socket = new WebSocket("ws://" + window.location.host + subscribeUrl);
+            socket.onmessage = function(event) {
+                console.log(" Received " + event.data);
 
+                var pin = JSON.parse(event.data);
+                var pinHtml ="<div class=\"pinto\">" +
+                            "   <img src=\" " + pin.url + " \" \/>" +
+                            "   <div class=\"info\">" +
+                            "       <h2>" + pin.title + "<\/h2>" +
+                            "       <p>"+ pin.description+ "<\/p>" +
+                            "   <\/div>" +
+                            "<\/div>";
 
-        function webSocketImageDisplay(){
-
-
-
-            webSocketReceive.listen(function (message) {
-                console.log(" Received " + message);
-
-                var pin = JSON.parse(message);
-                var pinHtml = "<div class=\"grid-item\">" +
-                "    <h3>" + pin.title + "<\/h3>" +
-                "    <img class=\"\" src=\" " + pin.url + "\" alt=\"Card image\">" +
-                "    <span class=\"\">" +
-                "        <p class=\"\">"+ pin.description+ "<\/p>" +
-                "    <\/span>" +
-                "<\/div>";
-
-                $(".card-columns").first().prepend(pinHtml);
-            });
+                $("#pinto-container").first().prepend(pinHtml);
+                setPinLayout();
+                $(document).trigger('resize');
+            }
+            socket.onclose = function(event) {
+                console.log(event)
+            }
         }
 
         $(document).ready(function(){
-            webSocketImageDisplay()
+            var channel = $("#board-n").html();
+            subscribe(channel);
+            setPinLayout();
         });
+
+        $(document).trigger('resize');
+
 </script>
