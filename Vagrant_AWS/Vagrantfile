@@ -127,7 +127,7 @@ config.vm.define "web3" do |web3|
 docker run -d --net=host --name consul consul agent -bind=$DOCKER_IP -retry-join=172.31.25.5
       docker run -d --name=registrator --net=host --volume=/var/run/docker.sock:/tmp/docker.sock gliderlabs/registrator:latest consul://127.0.0.1:8500
       weave run 10.2.1.6/24  -d --name play-pin -h app3.weave.local -p 8080:9000 isac/play-pin:1.9
-      weave run 10.2.1.8/24  -d --name cassandra -h cassandra3.weave.local -v /data:/var/lib/cassandra -v /vagrant/cassandra-env.sh:/etc/cassandra/cassandra-env.sh  -e CASSANDRA_LISTEN_ADDRESS=10.2.1.8 -e CASSANDRA_SEEDS=10.2.1.3 cassandra:3.9
+      weave run 10.2.1.7/24  -d --name cassandra -h cassandra3.weave.local -v /data:/var/lib/cassandra -v /vagrant/cassandra-env.sh:/etc/cassandra/cassandra-env.sh  -e CASSANDRA_LISTEN_ADDRESS=10.2.1.7 -e CASSANDRA_SEEDS=10.2.1.3 cassandra:3.9
     SHELL
   end
 

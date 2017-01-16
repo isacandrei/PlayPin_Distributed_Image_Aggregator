@@ -41,7 +41,7 @@ docker exec -it play-pin bash
 
 docker exec -it cassandra nodetool status 
 
-ALTER KEYSPACE "playpin" WITH REPLICATION =
+CREATE KEYSPACE "playpin" WITH REPLICATION =
   { 'class' : 'SimpleStrategy', 'replication_factor' : 2 };
 
 docker exec -ti cassandra /etc/cassandra/bin/nodetool status

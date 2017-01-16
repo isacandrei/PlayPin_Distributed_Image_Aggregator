@@ -34,7 +34,6 @@ class WebSocketsController @Inject()(implicit actorSystem: ActorSystem, material
     }
 
     def publish(channel: String) = Action.async { implicit request =>
-            println(channel)
         request.body.asFormUrlEncoded.flatMap{ params =>
             params.get("message").map{ message =>
                 redis.publish(channel, message.head).map{ n =>
