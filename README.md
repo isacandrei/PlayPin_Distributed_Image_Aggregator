@@ -1,1 +1,3 @@
-# 2016-Group-03-Flavius-Andrei-Isac_Elena-Alexandra-Ciobca
+### PlayPin
+
+Distributed image aggregator 
